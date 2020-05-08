@@ -5,23 +5,37 @@
 #include <string.h>
 #include <iostream>	
 #include <fstream>
-using namespace std;
+#include <stdexcept>
 
+#include "SIGINT_Handler.h"
+#include "SignalHandler.h"
+
+#include "Fifos/FifoLectura.h"
+#include "Fifos/FifoEscritura.h"
+
+
+using namespace std;
 class Logger {
 
 private:
-    static const string FILENAME;
-	ofstream outputFile;
+    static const int BUFFSIZE;
+	static const std::string ARCHIVO_FIFO;
+    static FifoEscritura * write_channel;
+
+    static const std::string FILENAME;
+    static std::fstream * outputFile;
 
 public:
+
     //constructor
-	Logger ();
+    static void init( void );
 
     // as method is friend it can access private members of logger
-    void log(std::string message);
-
+    static void log(std::string message);
+	
     //detructor
-     ~Logger();
+    static void destruir();
+
 
 };
 #endif
