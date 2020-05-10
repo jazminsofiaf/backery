@@ -9,13 +9,13 @@ void Sourdough::run(){
 		SignalHandler::getInstance()->registrarHandler(SIGUSR1, &sigusr_handler);
 	
 		this->write_channel = new FifoEscritura(this->channel_name);
-		//this->write_channel->abrir(); //blocking until open for read
+		this->write_channel->abrir(); //blocking until open for read
 		while( sigusr_handler.getGracefulQuit() == 0 ) {
             sleep(1);
-            Sourdough::Dough * dough = new Dough();
-            dough->num = num++;
-            //this->write_channel->escribir(dough, sizeof(dough));
-            Logger::log("[Sourdough] " + dough->toString() );
+            Sourdough::Dough dough;
+            dough.num = 1 + num++;
+            this->write_channel->escribir(&dough, sizeof(Sourdough::Dough));
+            Logger::log("[Sourdough] " + dough.to_string() );
 			std::cout << "[Sourdough] looping " << std::endl;
 	    }
 		std::cout << "[Sourdough] loop ends " << std::endl;

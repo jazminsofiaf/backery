@@ -3,7 +3,6 @@
 
 #include "SIGUSR_Handler.h"
 #include "SignalHandler.h"
-#include "Fifos/FifoLectura.h"
 #include "Fifos/FifoEscritura.h"
 #include "Logger.h"
 
@@ -24,7 +23,7 @@ class Sourdough{
 
         struct Dough{
             int num;
-            std::string toString(){
+            std::string to_string(){
                 return " Dough{ num = " +std::to_string(num) +" }";
             }
         };

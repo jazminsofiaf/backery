@@ -53,8 +53,6 @@ void Logger::destruir () {
 void Logger::writeToFile(){
     pid_t pid = fork ();
 	if ( pid == 0 ) {
-        //SIGINT_Handler sigint_handler;
-	    //SignalHandler::getInstance()->registrarHandler(SIGINT, &sigint_handler);
 
         FifoLectura canal(Logger::ARCHIVO_FIFO);
         char buffer[Logger::BUFFSIZE];

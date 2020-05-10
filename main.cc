@@ -6,6 +6,9 @@
 #include "Logger.h"
 #include "ArgsHelper.h"
 #include "Sourdough.h"
+#include "Pizzamaker.h"
+
+#include "Fifos/FifoLectura.h"
 
 
 using namespace std;
@@ -24,7 +27,19 @@ int main(int argc, char** argv){
 
 	Sourdough sourdough("masa");
 	sourdough.run();
+	//Pizzamaker pizza_maker("masa");
+	//pizza_maker.run();
 
+	
+	pid_t pid = fork ();
+	if ( pid == 0 ) {
+		FifoLectura * sourdough_channel = new FifoLectura("masa");
+		sourdough_channel->abrir();
+		Sourdough::Dough buffer;
+		sourdough_channel->leer(&buffer,sizeof(Sourdough::Dough));
+		std::cout << "[Main] first pice of bread dough" << buffer.to_string() <<std::endl;
+		exit(0);
+	}
 
 
 	
@@ -35,10 +50,8 @@ int main(int argc, char** argv){
 	
 	std::cout << "[Main] SIGINT stoping all" << std::endl;
 
-	
-
 	sourdough.stop();
-
+	//pizza_maker.stop();
 	Logger::destruir();
 	SignalHandler::destruir();
 	exit(0);

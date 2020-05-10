@@ -1,5 +1,2 @@
-[Sourdough]  Dough{ num = 0 }
 [Sourdough]  Dough{ num = 1 }
-[Sourdough]  Dough{ num = 2 }
-[Sourdough]  Dough{ num = 3 }
 [Sourdough] end
