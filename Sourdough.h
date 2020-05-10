@@ -3,7 +3,6 @@
 
 #include "SIGUSR_Handler.h"
 #include "SignalHandler.h"
-#include "Fifos/FifoLectura.h"
 #include "Fifos/FifoEscritura.h"
 #include "Logger.h"
 

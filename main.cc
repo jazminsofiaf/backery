@@ -6,6 +6,7 @@
 #include "Logger.h"
 #include "ArgsHelper.h"
 #include "Sourdough.h"
+#include "Fifos/FifoLectura.h"
 
 
 using namespace std;
@@ -18,12 +19,14 @@ int main(int argc, char** argv){
 	
 	
 	ArgsHelper::args * args = ArgsHelper::parse(argc, argv);
-	std::cout << "se parsea el archivo de pedidos: "<<args->pedido << std::endl;
+	std::cout << "se parsea el archivo de pedidos: " << args->pedido << std::endl;
 
 	Logger::init();
 
 	Sourdough sourdough("masa");
 	sourdough.run();
+	FifoLectura * pizza_maker_channel = new FifoLectura("masa");
+	pizza_maker_channel.abrir();
 
 
 
