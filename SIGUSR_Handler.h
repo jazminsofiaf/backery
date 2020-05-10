@@ -1,24 +1,24 @@
-#ifndef SIGINT_HANDLER_H_
-#define SIGINT_HANDLER_H_
+#ifndef SIGUSR_HANDLER_H_
+#define SIGUSR_HANDLER_H_
 
 #include <signal.h>
 #include <assert.h>
 
 #include "EventHandler.h"
 
-class SIGINT_Handler : public EventHandler {
+class SIGUSR_Handler : public EventHandler {
 
 	private:
 		sig_atomic_t gracefulQuit;
 
 	public:
 
-		SIGINT_Handler(): gracefulQuit(0) {}
+		SIGUSR_Handler(): gracefulQuit(0) {}
 
-		~SIGINT_Handler() {}
+		~SIGUSR_Handler() {}
 
 		virtual int handleSignal( int signum ) {
-			assert ( signum == SIGINT );
+			assert ( signum == SIGUSR1 );
 			this->gracefulQuit = 1;
 			return 0;
 		}

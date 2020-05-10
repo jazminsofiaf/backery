@@ -6,7 +6,7 @@
 #include <sys/shm.h>
 #include <string>
 #include <string.h>
-#include <iostream>
+#include <iostream>	
 #include <errno.h>
 
 template <class T> class MemoriaCompartida {

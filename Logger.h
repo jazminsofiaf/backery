@@ -24,13 +24,15 @@ private:
 
     static const std::string FILENAME;
     static std::fstream * outputFile;
+    static pid_t process_id;
+    static void writeToFile();
 
 public:
 
     //constructor
     static void init( void );
 
-    // as method is friend it can access private members of logger
+
     static void log(std::string message);
 	
     //detructor
