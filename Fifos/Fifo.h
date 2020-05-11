@@ -6,13 +6,15 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <cerrno>
+#include <iostream>
 
 class Fifo {
 public:
 	Fifo(const std::string nombre);
 	virtual ~Fifo();
 	virtual void abrir() = 0;
-	void cerrar();
+	int close_fifo();
 	void eliminar() const;
 
 protected:

@@ -1,6 +1,4 @@
 #include "Logger.h"
-const int ERROR = -1;
-const int FIFO_EOF = 0;
 
 const int Logger::BUFFSIZE = 100;
 const std::string Logger::ARCHIVO_FIFO = "/tmp/archivo_fifo";
@@ -13,9 +11,10 @@ pid_t Logger::process_id;
 
  
 void Logger::init(){
-    if(outputFile != NULL){ //el logger se debe crear una sola vez en todo el programa.
-        std::cerr << "Error: logger already initialized" << std::endl;
-        throw std::runtime_error("Error: logger already initialized");
+    if(outputFile != NULL){ //Logger should be initialized only once.
+        std::string error_msg = "Error: logger already initialized";
+        std::cerr << error_msg << std::endl;
+        throw std::runtime_error(error_msg );
     }
     outputFile = new std::fstream();
     outputFile->open(Logger::FILENAME, ios::out | fstream::trunc); 
@@ -27,24 +26,32 @@ void Logger::init(){
     
 }
 
-void Logger::log(std::string message){
-    if(write_channel == NULL){
-        std::cerr << "Error: logger not initialized" << std::endl;
-        throw std::runtime_error("Error: logger not initialized");
+//writes are atomic on pipe if buffer size is not greater than PIPE_BUF
+void Logger::log(const Employee * employee, const std::string message){
+        if(write_channel == NULL){
+            std::string error_msg = "Error: logger not initialized";
+            std::cerr << error_msg << std::endl;
+            throw std::runtime_error(error_msg);
+        }
+        std::string formated_message = "[" + employee->identify() + "] " + message +"\n";
+        write_channel->escribir(static_cast<const void*>(formated_message.c_str()), formated_message.length() );
     }
-    message += '\n';
-	write_channel->escribir (static_cast<const void*>(message.c_str()), message.length() );
-}
 
 
 void Logger::destruir () {
     std::cout << "[Logger] stops" << std::endl;
     if(write_channel == NULL || outputFile == NULL ){
-        std::cerr << "Error: logger not initialized" << std::endl;
-        throw std::runtime_error("Error: logger not initialized");
+        std::string error_msg = "Error: logger not initialized";
+        std::cerr << error_msg  << std::endl;
+        throw std::runtime_error(error_msg);
     }
     outputFile->close();   
-	write_channel->cerrar(); //stops flush loop
+	int rv = write_channel->close_fifo(); //stops flush loop
+    if(rv != OK){
+        std::string error_msg = "[Logger] Error closing write channel fifo ";
+        std::cerr << error_msg << std::strerror(errno) << std::endl;
+        throw std::runtime_error(error_msg);
+	} 
     int status;
     waitpid(process_id, &status, 0);
 }
@@ -52,7 +59,7 @@ void Logger::destruir () {
 
 void Logger::writeToFile(){
     pid_t pid = fork ();
-	if ( pid == 0 ) {
+	if ( pid == CHILD_PD ) {
 
         FifoLectura canal(Logger::ARCHIVO_FIFO);
         char buffer[Logger::BUFFSIZE];
@@ -68,14 +75,20 @@ void Logger::writeToFile(){
                 bytesLeidos = canal.leer(static_cast<void*>(buffer),BUFFSIZE);
         }
         if(bytesLeidos == ERROR){
-            std::cout << "[Logger] error " <<  bytesLeidos << std::endl;
-            throw std::runtime_error("Error: fifo reading error");
+            std::string error_msg = "[Logger] Error reading fifo ";
+            std::cout << error_msg <<  bytesLeidos << std::endl;
+            throw std::runtime_error(error_msg);
                 
         }    
         std::cout << "[Logger] quit flush loop ok " <<  bytesLeidos << std::endl;
-        canal.cerrar();
+        int rv = canal.close_fifo();
+        if(rv != OK){
+            std::string error_msg = "[Logger] Error closing read channel fifo ";
+            std::cerr << error_msg << std::strerror(errno) << std::endl;
+            throw std::runtime_error(error_msg);
+	    } 
         canal.eliminar();
-        exit(0);
+        exit(OK);
     }
     process_id = pid;
     std::cout << "[Logger] pid: " <<  process_id << std::endl;

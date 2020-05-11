@@ -1,2 +1,15 @@
 [Sourdough]  Dough{ num = 1 }
+[PizzaMaker 2]  took dough pice  Dough{ num = 1 }
+[Sourdough]  Dough{ num = 2 }
+[PizzaMaker 1]  took dough pice  Dough{ num = 2 }
+[Sourdough]  Dough{ num = 3 }
+[PizzaMaker 2]  took dough pice  Dough{ num = 3 }
+[Sourdough]  Dough{ num = 4 }
+[PizzaMaker 1]  took dough pice  Dough{ num = 4 }
+[PizzaMaker 1]  took dough pice  Dough{ num = 5 }
+[Sourdough]  Dough{ num = 5 }
+[Sourdough]  Dough{ num = 6 }
 [Sourdough] end
+[PizzaMaker 1]  took dough pice  Dough{ num = 6 }
+[PizzaMaker 1] end
+[PizzaMaker 2] end

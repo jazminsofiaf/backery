@@ -1,14 +1,16 @@
 #ifndef SOURDOUGH_H_
 #define SOURDOUGH_H_
 
+#include "Constant.h"
 #include "SIGUSR_Handler.h"
 #include "SignalHandler.h"
 #include "Fifos/FifoEscritura.h"
 #include "Logger.h"
+#include "Employee.h"
 
 
 using namespace std;
-class Sourdough{
+class Sourdough: public Employee{
     private:
         std::string channel_name;
         FifoEscritura * write_channel;
@@ -17,9 +19,10 @@ class Sourdough{
         
     public:
         //constructor
-        Sourdough(std::string channel_name);
+        Sourdough( std::string channel_name);
         void run();
         void stop();
+        std::string identify() const override; 
 
         struct Dough{
             int num;

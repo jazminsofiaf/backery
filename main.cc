@@ -27,19 +27,11 @@ int main(int argc, char** argv){
 
 	Sourdough sourdough("masa");
 	sourdough.run();
-	//Pizzamaker pizza_maker("masa");
-	//pizza_maker.run();
+	Pizzamaker pizza_maker(1, "masa");
+	pizza_maker.run();
 
-	
-	pid_t pid = fork ();
-	if ( pid == 0 ) {
-		FifoLectura * sourdough_channel = new FifoLectura("masa");
-		sourdough_channel->abrir();
-		Sourdough::Dough buffer;
-		sourdough_channel->leer(&buffer,sizeof(Sourdough::Dough));
-		std::cout << "[Main] first pice of bread dough" << buffer.to_string() <<std::endl;
-		exit(0);
-	}
+	Pizzamaker pizza_maker2(2, "masa");
+	pizza_maker2.run();
 
 
 	
@@ -50,8 +42,22 @@ int main(int argc, char** argv){
 	
 	std::cout << "[Main] SIGINT stoping all" << std::endl;
 
+	
 	sourdough.stop();
+	pid_t pid = fork ();
+	if ( pid == CHILD_PD ) {
+		pizza_maker.stop();
+		exit(OK);
+	}
+
+	pid = fork ();
+	if ( pid == CHILD_PD ) {
+		pizza_maker2.stop();
+		exit(OK);
+	}
 	//pizza_maker.stop();
+	//pizza_maker2.stop();
+	
 	Logger::destruir();
 	SignalHandler::destruir();
 	exit(0);

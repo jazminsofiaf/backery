@@ -7,8 +7,8 @@
 #include <fstream>
 #include <stdexcept>
 
-#include "SIGINT_Handler.h"
-#include "SignalHandler.h"
+#include "Constant.h"
+#include "Employee.h"
 
 #include "Fifos/FifoLectura.h"
 #include "Fifos/FifoEscritura.h"
@@ -32,8 +32,8 @@ public:
     //constructor
     static void init( void );
 
-
-    static void log(std::string message);
+    
+    static void log(const Employee * employee, const std::string message);
 	
     //detructor
     static void destruir();
