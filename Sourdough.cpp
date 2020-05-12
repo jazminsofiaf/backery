@@ -10,7 +10,7 @@ void Sourdough::run(){
 	if ( pid == CHILD_PD ) {
 
 		SIGUSR_Handler sigusr_handler;
-		SignalHandler::getInstance()->registrarHandler(SIGUSR1, &sigusr_handler);
+		SignalHandler::getInstance()->registrarHandler(SIGUSR1, &sigusr_handler,0);
 	
 		this->write_channel = new FifoEscritura(this->channel_name);
 		this->write_channel->abrir(); //blocking until open for read
@@ -21,13 +21,13 @@ void Sourdough::run(){
             this->write_channel->escribir(&dough, sizeof(Sourdough::Dough));
             Logger::log(this, dough.to_string() );
 			std::cout << "[Sourdough] looping " << std::endl;
-	    }
+		}
 		int rv = this->write_channel->close_fifo();
 		if(rv != OK){
 			std::string msg = "[Sourdough]  Error closing fifo ";	
 			std::cout << msg << std::strerror(errno) << std::endl;
 		} 
-		//this->write_channel->eliminar();
+		this->write_channel->eliminar();
 		std::cout << "[Sourdough] loop ends " << std::endl;
 		exit(OK);
 	}

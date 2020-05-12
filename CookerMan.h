@@ -13,6 +13,7 @@ using namespace std;
 class CookerMan : public Employee{
     protected:
         std::string sourdough_channel_name;
+        std::mutex mutex;
         FifoLectura * sourdough_channel;
         pid_t process_id;
 

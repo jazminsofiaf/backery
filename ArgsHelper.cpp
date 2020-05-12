@@ -23,7 +23,6 @@ ArgsHelper::args * ArgsHelper::parse(int argc, char** argv){
     return args;
 
 }
-
 int ArgsHelper::get(int argc, char** argv, std::string name){ 
     for (int i = 1; i < argc; ++i){
         std::string argument = argv[i];

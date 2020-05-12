@@ -7,31 +7,55 @@
 #include "ArgsHelper.h"
 #include "Sourdough.h"
 #include "Pizzamaker.h"
+#include "Recepcionist.h"
 
 #include "Fifos/FifoLectura.h"
 
 
 using namespace std;
 
+int get_file_size(std::string filename){
+    FILE *p_file = NULL;
+    p_file = fopen(filename.c_str(),"rb");
+    fseek(p_file,0,SEEK_END);
+    int size = ftell(p_file);
+    fclose(p_file);
+    return size;
+}
+
 int main(int argc, char** argv){
 	//event handler para la senial SIGINT (-2)
 	//A child created via fork(2) inherits a copy of its parent's signal dispositions
 	SIGINT_Handler sigint_handler;
-	SignalHandler::getInstance()->registrarHandler(SIGINT, &sigint_handler);
-	
+	SignalHandler::getInstance()->registrarHandler(SIGINT, &sigint_handler, SA_RESTART);
 	
 	ArgsHelper::args * args = ArgsHelper::parse(argc, argv);
-	std::cout << "se parsea el archivo de pedidos: "<<args->pedido << std::endl;
-
 	Logger::init();
 
+	std::ifstream file(args->pedido); 
+  	int file_size = get_file_size(args->pedido);	
+	int bytes_by_delivery_recepcionist = ( file_size + args->delivery - 1 )/ args->delivery;
+	for(int start =0, num = 1 ; start < file_size && num <= args->delivery ; start = start + bytes_by_delivery_recepcionist, num=num+1){
+		Recepcionist recepcionist(num,"bread", "pizza", start, start + bytes_by_delivery_recepcionist, args->pedido);
+		recepcionist.run();
+	}
+	
+
+
+	
+
+
+	
+
+
+
 	Sourdough sourdough("masa");
-	sourdough.run();
+	//sourdough.run();
 	Pizzamaker pizza_maker(1, "masa");
-	pizza_maker.run();
+	//pizza_maker.run();
 
 	Pizzamaker pizza_maker2(2, "masa");
-	pizza_maker2.run();
+	//pizza_maker2.run();
 
 
 	
@@ -43,20 +67,10 @@ int main(int argc, char** argv){
 	std::cout << "[Main] SIGINT stoping all" << std::endl;
 
 	
-	sourdough.stop();
-	pid_t pid = fork ();
-	if ( pid == CHILD_PD ) {
-		pizza_maker.stop();
-		exit(OK);
-	}
-
-	pid = fork ();
-	if ( pid == CHILD_PD ) {
-		pizza_maker2.stop();
-		exit(OK);
-	}
+	//sourdough.stop();
 	//pizza_maker.stop();
 	//pizza_maker2.stop();
+	
 	
 	Logger::destruir();
 	SignalHandler::destruir();
