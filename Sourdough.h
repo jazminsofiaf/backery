@@ -14,14 +14,13 @@ class Sourdough: public Employee{
     private:
         std::string channel_name;
         FifoEscritura * write_channel;
-        pid_t process_id;
         int num;
         
     public:
         //constructor
         Sourdough( std::string channel_name);
-        void run();
-        void stop();
+        void run() override;
+        void stop() override;
         std::string identify() const override; 
 
         struct Dough{

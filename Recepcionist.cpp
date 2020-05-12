@@ -8,7 +8,7 @@ Recepcionist::Recepcionist(int id_num,
 }
 
 void Recepcionist::run(){
-    std::ifstream file(this->orders_file);
+    std::ifstream file(this->orders_file, ios::in | ios::binary);
     int pos = this->read_start;
     file.seekg(pos);
     char c;
@@ -47,9 +47,10 @@ void Recepcionist::validate_order(std::string order){
     }
 }
 
+void Recepcionist::stop(){
 
+}
 
-void Recepcionist::stop(){}
 std::string Recepcionist::identify() const {
      return "Recepcionist "+std::to_string(this->id);
 

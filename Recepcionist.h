@@ -34,8 +34,8 @@ class Recepcionist : public Employee {
         Recepcionist(int id_num, 
                     std::string bread_name, std::string pizza_name,
                     int start, int end, std::string file_name);
-        void run();
-        void stop();
+        void run() override;
+        void stop() override;
         std::string identify() const override; 
 };
 

@@ -50,12 +50,12 @@ int main(int argc, char** argv){
 
 
 	Sourdough sourdough("masa");
-	//sourdough.run();
+	sourdough.start();
 	Pizzamaker pizza_maker(1, "masa");
-	//pizza_maker.run();
+	pizza_maker.start();
 
 	Pizzamaker pizza_maker2(2, "masa");
-	//pizza_maker2.run();
+	pizza_maker2.start();
 
 
 	
@@ -67,9 +67,9 @@ int main(int argc, char** argv){
 	std::cout << "[Main] SIGINT stoping all" << std::endl;
 
 	
-	//sourdough.stop();
-	//pizza_maker.stop();
-	//pizza_maker2.stop();
+	sourdough.stop();
+	pizza_maker.stop();
+	pizza_maker2.stop();
 	
 	
 	Logger::destruir();

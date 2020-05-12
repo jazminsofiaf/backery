@@ -21,8 +21,8 @@ class CookerMan : public Employee{
     public:
         //constructor
         CookerMan(int id_num, std::string sourdough_channel_name);
-        void run();
-        void stop();
+        void run() override;
+        void stop() override;
         virtual ~CookerMan() = default;
 };
 
