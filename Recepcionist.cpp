@@ -13,7 +13,7 @@ void Recepcionist::run(){
     file.seekg(pos);
     char c;
     std::string order = "";
-  	while (file.get(c) && pos < this->read_end){
+  	while (pos < this->read_end && file.get(c)){
         if(this->is_delimiter(c)){
             this->validate_order(order); 
             order = "";
@@ -25,7 +25,6 @@ void Recepcionist::run(){
     if(order.empty()){
         return; //no words cut
     }
-    order += c;
     while(file.get(c)){ //read last order
         if(this->is_delimiter(c)){  
             this->validate_order(order);
@@ -45,7 +44,7 @@ void Recepcionist::validate_order(std::string order){
     if(order.compare("pan") == 0 || order.compare("pizza") == 0){
         std::cout << this->identify() << " read order: "<< order << endl; 
         Logger::log(this, "order received: "+ order);
-    }  
+    }
 }
 
 
