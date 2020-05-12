@@ -19,10 +19,11 @@ ArgsHelper::args * ArgsHelper::parse(int argc, char** argv){
     args->pizzeros = ArgsHelper::get(argc, argv, ArgsHelper::PIZZEROS);
     args->panaderos = ArgsHelper::get(argc, argv, ArgsHelper::PANADEROS);
     args->delivery = ArgsHelper::get(argc, argv, ArgsHelper::DELIVERY);
-    args->pedido = ArgsHelper::getPedido(argc, argv);
+    args->pedido = ArgsHelper::getOrdersFile(argc, argv);
+    args->file_size = ArgsHelper::getFileSize(args->pedido);
     return args;
-
 }
+
 int ArgsHelper::get(int argc, char** argv, std::string name){ 
     for (int i = 1; i < argc; ++i){
         std::string argument = argv[i];
@@ -42,7 +43,7 @@ int ArgsHelper::get(int argc, char** argv, std::string name){
     throw std::runtime_error("Error: Invalid Arguments");
 }
 
-std::string ArgsHelper::getPedido(int argc, char** argv){ 
+std::string ArgsHelper::getOrdersFile(int argc, char** argv){ 
     for (int i = 1; i < argc; ++i){
         std::string argument = argv[i];
         std::string::size_type n = argument.find(ArgsHelper::PEDIDOS);
@@ -53,6 +54,19 @@ std::string ArgsHelper::getPedido(int argc, char** argv){
     }
     std::cerr << "no se encontro "<<  ArgsHelper::PEDIDOS << std::endl;
     throw std::runtime_error("Error: Invalid Arguments");
+}
+
+int ArgsHelper::getFileSize(std::string filename){
+    FILE * file = NULL;
+    file  = fopen(filename.c_str(),"rb");
+    if (file == NULL) {
+        perror("No existe el archivo de pedidos");
+        return EXIT_FAILURE;
+    }
+    fseek(file,0,SEEK_END);
+    int size = ftell(file);
+    fclose(file);
+    return size;
 }
 
 

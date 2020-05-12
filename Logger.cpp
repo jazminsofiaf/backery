@@ -80,7 +80,7 @@ void Logger::writeToFile(){
             throw std::runtime_error(error_msg);
                 
         }    
-        std::cout << "[Logger] quit flush loop ok " <<  bytesLeidos << std::endl;
+        std::cout << "[Logger] quit flush ok " <<  bytesLeidos << std::endl;
         int rv = canal.close_fifo();
         if(rv != OK){
             std::string error_msg = "[Logger] Error closing read channel fifo ";

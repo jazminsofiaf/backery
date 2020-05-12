@@ -13,11 +13,12 @@ class ArgsHelper {
     static const std::string DELIVERY;
     static const std::string PEDIDOS;
     static int get(int argc, char** argv, std::string name);
-    static std::string getPedido(int argc, char** argv);
+    static std::string getOrdersFile(int argc, char** argv);
+    static int getFileSize(std::string filename);
 
     public:
     struct args{
-        int pizzeros, panaderos, delivery;
+        int pizzeros, panaderos, delivery, file_size;
         std::string pedido;
     };
     static args * parse(int argc, char** argv);   
