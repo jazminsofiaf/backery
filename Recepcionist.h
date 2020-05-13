@@ -3,8 +3,12 @@
 
 #define CHUNK_LEN 5 
 
+
 #include <fstream> 
+#include <locale>
+#include <map>
 #include "Constant.h"
+#include "ProductEnum.h"
 #include "Fifos/FifoEscritura.h"
 #include "Fifos/FifoLectura.h"
 #include "Logger.h"
@@ -14,8 +18,6 @@ using namespace std;
 
 class Recepcionist : public Employee {
     private:
-        
-        
         std::string bread_channel_name;
         std::string pizza_channel_name;
         int read_start;
@@ -23,9 +25,10 @@ class Recepcionist : public Employee {
         std::string orders_file;
         FifoEscritura * bread_channel;
         FifoEscritura * pizza_channel;
-        pid_t process_id;
-        bool is_delimiter(char c);
-        void validate_order(std::string order);
+        std::map<string, FifoEscritura *> channel_map;
+        bool isDelimiter(char c);
+        void tryToSend(std::string order, int pos);
+        std::string toUpper(std::string str);
     
 
         
@@ -37,6 +40,14 @@ class Recepcionist : public Employee {
         void run() override;
         void stop() override;
         std::string identify() const override; 
+
+        struct Order {
+            int id;
+            std::string product;
+            std::string toString(){
+                return " Order { id = " +std::to_string(id) +", product = "+ product +"}";
+            }
+        };
 };
 
 #endif

@@ -23,6 +23,7 @@ int main(int argc, char** argv){
 	ArgsHelper::args * args = ArgsHelper::parse(argc, argv);
 	Logger::init();
 
+
 	
 	std::ifstream file(args->pedido); 
 	int bytes_by_delivery_recepcionist = ( args->file_size + args->delivery - 1 )/ args->delivery;
@@ -30,17 +31,50 @@ int main(int argc, char** argv){
 		Recepcionist recepcionist(num,"bread", "pizza", start, start + bytes_by_delivery_recepcionist, args->pedido);
 		recepcionist.start();
 	}
+
+	pid_t pid = fork ();
+	if ( pid == CHILD_PD ) {
+		FifoLectura * pizza_channel = new FifoLectura("pizza");
+		//pizza_channel->abrir();
+
+		/*size_t  read_bytes = pizza_channel->leer(&dough_piece,sizeof(Sourdough::Dough));
+		while(read_bytes > FIFO_EOF ){
+        	read_bytes = pizza_channel->leer(&dough_piece,sizeof(Sourdough::Dough));
+    	} 
+    	if(read_bytes == ERROR){
+        	throw std::runtime_error("Error: fifo reading error");     
+    	} */
+		exit(OK);
+	}
+
+	pid = fork ();
+	if ( pid == CHILD_PD ) {
+		FifoLectura * bread_channel = new FifoLectura("bread");
+		//bread_channel->abrir();
+
+		/*size_t  read_bytes = pizza_channel->leer(&dough_piece,sizeof(Sourdough::Dough));
+		while(read_bytes > FIFO_EOF ){
+        	read_bytes = pizza_channel->leer(&dough_piece,sizeof(Sourdough::Dough));
+    	} 
+    	if(read_bytes == ERROR){
+        	throw std::runtime_error("Error: fifo reading error");     
+    	} */
+		exit(OK);
+	}
+
+
 	
 
+	
+	/*
 	Sourdough sourdough("masa");
 	sourdough.start();
 	Pizzamaker pizza_maker(1, "masa");
 	pizza_maker.start();
-
 	Pizzamaker pizza_maker2(2, "masa");
 	pizza_maker2.start();
+	*/
 
-	
 	
 	while( sigint_handler.getGracefulQuit() == 0 ) {
 		//mientras no se reciba la senial SIGINT, el canal de log sigue abierto
@@ -50,9 +84,11 @@ int main(int argc, char** argv){
 	std::cout << "[Main] SIGINT stoping all" << std::endl;
 
 	
+	/*
 	sourdough.stop();
 	pizza_maker.stop();
 	pizza_maker2.stop();
+	*/
 	
 	
 	Logger::destruir();

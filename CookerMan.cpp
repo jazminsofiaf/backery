@@ -13,8 +13,8 @@ void CookerMan::run(){
 	size_t read_bytes = this->sourdough_channel->leer(&dough_piece,sizeof(Sourdough::Dough));
     this->mutex.unlock();
     while(read_bytes > FIFO_EOF ){
-		std::cout << this->identify() << " took dough pice " << dough_piece.to_string() <<std::endl;
-        Logger::log(this, " took dough pice " + dough_piece.to_string());
+		std::cout << this->identify() << " took dough pice " << dough_piece.toString() <<std::endl;
+        Logger::log(this, " took dough pice " + dough_piece.toString());
 
         this->mutex.lock();
         read_bytes = this->sourdough_channel->leer(&dough_piece,sizeof(Sourdough::Dough));

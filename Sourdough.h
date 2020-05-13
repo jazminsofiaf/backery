@@ -25,7 +25,7 @@ class Sourdough: public Employee{
 
         struct Dough{
             int num;
-            std::string to_string(){
+            std::string toString(){
                 return " Dough{ num = " +std::to_string(num) +" }";
             }
         };

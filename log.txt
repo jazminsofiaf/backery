@@ -1,19 +1,13 @@
-[Recepcionist 1] order received: pan
-[Recepcionist 1] order received: pan
-[Recepcionist 1] order received: pan
-[Recepcionist 1] order received: pan
-[Recepcionist 1] order received: pizza
-[Recepcionist 2] order received: pizza
-[Recepcionist 2] order received: pan
-[Recepcionist 2] order received: pan
-[Recepcionist 2] order received: pizza
-[Recepcionist 2] order received: pizza
-[Recepcionist 3] order received: pizza
-[Recepcionist 3] order received: pizza
-[Recepcionist 3] order received: pizza
-[Sourdough]  Dough{ num = 1 }
-[PizzaMaker 1]  took dough pice  Dough{ num = 1 }
-[Sourdough]  Dough{ num = 2 }
-[Sourdough]  Dough{ num = 3 }
-[PizzaMaker 1]  took dough pice  Dough{ num = 3 }
-[PizzaMaker 2]  took dough pice  Dough{ num = 2 }
+[Recepcionist 1]  Order { id = 3, product = PAN}
+[Recepcionist 1]  Order { id = 7, product = PAN}
+[Recepcionist 1]  Order { id = 11, product = PAN}
+[Recepcionist 1]  Order { id = 15, product = PAN}
+[Recepcionist 1]  Order { id = 21, product = PIZZA}
+[Recepcionist 2]  Order { id = 27, product = PIZZA}
+[Recepcionist 2]  Order { id = 31, product = PAN}
+[Recepcionist 2]  Order { id = 35, product = PAN}
+[Recepcionist 2]  Order { id = 41, product = PIZZA}
+[Recepcionist 2]  Order { id = 44, product = PIZZA}
+[Recepcionist 3]  Order { id = 53, product = PIZZA}
+[Recepcionist 3]  Order { id = 59, product = PIZZA}
+[Recepcionist 3]  Order { id = 65, product = PIZZA}

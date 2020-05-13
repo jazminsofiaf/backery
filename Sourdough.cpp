@@ -16,7 +16,7 @@ void Sourdough::run(){
             Sourdough::Dough dough;
             dough.num = 1 + num++;
             this->write_channel->escribir(&dough, sizeof(Sourdough::Dough));
-            Logger::log(this, dough.to_string() );
+            Logger::log(this, dough.toString() );
 			std::cout << "[Sourdough] looping " << std::endl;
 	}
 	int rv = this->write_channel->close_fifo();

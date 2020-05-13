@@ -15,7 +15,6 @@ class CookerMan : public Employee{
         std::string sourdough_channel_name;
         std::mutex mutex;
         FifoLectura * sourdough_channel;
-        pid_t process_id;
 
         
     public:
