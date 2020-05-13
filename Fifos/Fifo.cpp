@@ -12,6 +12,9 @@ Fifo::~Fifo() {
 
 int Fifo::close_fifo() {
 	int rv = close( this->fd );
+	if(rv != 0){
+		std::cerr << "Error closing fifo " << this->nombre << ": "<<std::strerror(errno) << std::endl;
+	}
 	this->fd = -1;
 	return rv;
 }

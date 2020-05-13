@@ -1,6 +1,12 @@
 #include "Baker.h"
 
 
-Baker::Baker(std::string sourdough_channel_name): CookerMan(1, sourdough_channel_name) {}
+Baker::Baker(int id_num, std::string sourdough_channel_name, std::string orders_channel_name)
+: CookerMan(id_num, sourdough_channel_name, orders_channel_name) {}
+
+std::string Baker::identify() const {
+    return "Baker "+std::to_string(this->id);
+}
+
 
 

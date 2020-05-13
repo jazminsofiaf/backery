@@ -19,11 +19,7 @@ void Sourdough::run(){
             Logger::log(this, dough.toString() );
 			std::cout << "[Sourdough] looping " << std::endl;
 	}
-	int rv = this->write_channel->close_fifo();
-	if(rv != OK){
-			std::string msg = "[Sourdough]  Error closing fifo ";	
-			std::cout << msg << std::strerror(errno) << std::endl;
-	} 
+	this->write_channel->close_fifo();
 	this->write_channel->eliminar();
 	std::cout << "[Sourdough] loop ends " << std::endl;
 }

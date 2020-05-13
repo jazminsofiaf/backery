@@ -13,8 +13,8 @@ Recepcionist::Recepcionist(int id_num,
 
 void Recepcionist::run(){
     //blocking until open for read
-    //this->bread_channel->abrir();
-    //this->pizza_channel->abrir(); 
+    this->bread_channel->abrir();
+    this->pizza_channel->abrir(); 
 
     std::ifstream file(this->orders_file, ios::in | ios::binary);
     int pos = this->read_start;
@@ -41,6 +41,9 @@ void Recepcionist::run(){
            order += c;
         }
     }
+
+    this->bread_channel->close_fifo();
+    this->pizza_channel->close_fifo(); 
      
 }
 
@@ -51,12 +54,11 @@ bool Recepcionist::isDelimiter(char c){
 void Recepcionist::tryToSend(std::string str_order, int pos){
     str_order = this->toUpper(str_order);
     if(this->channel_map.count(str_order)){
-        //FifoEscritura * channel = this->channel_map[str_order];
+        FifoEscritura * channel = this->channel_map[str_order];
         Recepcionist::Order order;
         order.id = pos; //set last read position as order id
         order.product = str_order;
-        //channel->escribir(&order, sizeof(Recepcionist::Order));
-        std::cout << this->identify() << " read "<< order.toString() << endl;
+        channel->escribir(&order, sizeof(Recepcionist::Order));
         Logger::log(this, order.toString());
     }
 }

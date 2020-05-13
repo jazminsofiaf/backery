@@ -2,8 +2,8 @@
 #define SOURDOUGH_H_
 
 #include "Constant.h"
-#include "SIGUSR_Handler.h"
-#include "SignalHandler.h"
+#include "Handlers/SIGUSR_Handler.h"
+#include "Handlers/SignalHandler.h"
 #include "Fifos/FifoEscritura.h"
 #include "Logger.h"
 #include "Employee.h"
