@@ -4,6 +4,7 @@
 #include "Constant.h"
 #include "Fifos/FifoEscritura.h"
 #include "Fifos/FifoLectura.h"
+#include "Fifos/FifoShared.h"
 #include "Logger.h"
 #include "Recepcionist.h"
 #include "Sourdough.h"
@@ -15,14 +16,17 @@ class CookerMan : public Employee{
     protected:
         std::string sourdough_channel_name;
         std::string orders_channel_name;
-        std::mutex mutex;
-        FifoLectura * sourdough_channel;
-        FifoLectura * orders_channel;
+        std::string delivery_channel_name;
+        FifoShared * sourdough_channel;
+        FifoShared * orders_channel;
+        FifoEscritura * delivery_channel;
 
         
     public:
         //constructor
-        CookerMan(int id_num, std::string sourdough_channel_name, std::string orders_channel_name);
+        CookerMan(int id_num,   std::string sourdough_channel_name, 
+                                std::string orders_channel_name, 
+                                std::string delivery_channel_name);
         void run() override;
         void stop() override;
         virtual ~CookerMan() = default;
@@ -31,8 +35,7 @@ class CookerMan : public Employee{
             Recepcionist::Order order;
             Sourdough::Dough dough;
             std::string toString(){
-                return  "Product{ order = " +order.toString() +"\n"
-                       +"          dough ="+ dough.toString()+"\n}";
+                return  "Product{" +dough.toString()+", "+ order.toString()+"}";
             }
         };
 };

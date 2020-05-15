@@ -19,6 +19,9 @@ ArgsHelper::args * ArgsHelper::parse(int argc, char** argv){
     args->pizzeros = ArgsHelper::get(argc, argv, ArgsHelper::PIZZEROS);
     args->panaderos = ArgsHelper::get(argc, argv, ArgsHelper::PANADEROS);
     args->delivery = ArgsHelper::get(argc, argv, ArgsHelper::DELIVERY);
+    if(args->pizzeros < 1 || args->panaderos < 1|| args->delivery < 1){
+        throw std::runtime_error("Error: more than one employee is needed for each type");
+    }
     args->pedido = ArgsHelper::getOrdersFile(argc, argv);
     args->file_size = ArgsHelper::getFileSize(args->pedido);
     return args;
@@ -61,7 +64,7 @@ int ArgsHelper::getFileSize(std::string filename){
     file  = fopen(filename.c_str(),"rb");
     if (file == NULL) {
         perror("No existe el archivo de pedidos");
-        return EXIT_FAILURE;
+        throw std::runtime_error("Error: Invalid Arguments");
     }
     fseek(file,0,SEEK_END);
     int size = ftell(file);

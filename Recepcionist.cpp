@@ -12,7 +12,7 @@ Recepcionist::Recepcionist(int id_num,
 }
 
 void Recepcionist::run(){
-    //blocking until open for read
+    //other side already open
     this->bread_channel->abrir();
     this->pizza_channel->abrir(); 
 
@@ -40,11 +40,10 @@ void Recepcionist::run(){
         } else{
            order += c;
         }
-    }
-
+    }  
+    //signal to stop loop  for baker and pizza man
     this->bread_channel->close_fifo();
-    this->pizza_channel->close_fifo(); 
-     
+    this->pizza_channel->close_fifo();    
 }
 
 bool Recepcionist::isDelimiter(char c){
@@ -60,6 +59,7 @@ void Recepcionist::tryToSend(std::string str_order, int pos){
         order.product = str_order;
         channel->escribir(&order, sizeof(Recepcionist::Order));
         Logger::log(this, order.toString());
+        std::cout << this->identify() << order.toString() << endl;
     }
 }
 

@@ -5,15 +5,16 @@ std::string Delivery::identify() const {
     return "Delivery";
 }
 
-void Sourdough::run(){
+void Delivery::run(){
 	this->read_channel = new FifoLectura(this->channel_name);
 	this->read_channel->abrir(); //blocking until open for write
 
     CookerMan::Product product;
-	size_t read_bytes = read_channel->leer(&order,sizeof(CookerMan::Product));
+	size_t read_bytes = read_channel->leer(&product,sizeof(CookerMan::Product));
 	while(read_bytes > FIFO_EOF ){
 		Logger::log(this, product.toString());
-        read_bytes = read_channel->leer(&order,sizeof(CookerMan::Product));
+		std::cout << "[Delivery] " << product.toString() << std::endl;
+        read_bytes = read_channel->leer(&product,sizeof(CookerMan::Product));
     } 
     if(read_bytes == ERROR){
         throw std::runtime_error("Error reading orders fifo");     

@@ -6,7 +6,7 @@ void Employee::start(){
     pid_t pid = fork ();
 	if ( pid == CHILD_PD ) {
         this->run();
-		exit(OK);
+        exit(OK); //no detructor called
 	}
 	std::cout << this-> identify() <<" pid: "<<pid << std::endl;
 	this->process_id = pid;
@@ -24,6 +24,5 @@ void Employee::stop(){
             std::cerr << this-> identify() << " bad argument passed to waitpid" << std::endl;
         }
     }
-	std::cout <<  this-> identify() << " stoped " << status << std::endl;
-
+	std::cout <<"[" << this-> identify() << "] stoped " << status << std::endl;
 }

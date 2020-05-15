@@ -19,6 +19,7 @@ class Employee{
         virtual void run() = 0;
         virtual void stop();
         virtual std::string identify() const = 0;  
+        virtual ~Employee() = default;
 };
 
 #endif

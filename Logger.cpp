@@ -43,17 +43,15 @@ void Logger::destruir () {
     if(write_channel == NULL || outputFile == NULL ){
         std::string error_msg = "Error: logger not initialized";
         std::cerr << error_msg  << std::endl;
-        throw std::runtime_error(error_msg);
-    }
-    outputFile->close();   
+    } 
 	int rv = write_channel->close_fifo(); //stops flush loop
     if(rv != OK){
         std::string error_msg = "[Logger] Error closing write channel fifo ";
         std::cerr << error_msg << std::strerror(errno) << std::endl;
-        throw std::runtime_error(error_msg);
 	} 
     int status;
     waitpid(process_id, &status, 0);
+    outputFile->close(); 
 }
 
 

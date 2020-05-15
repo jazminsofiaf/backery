@@ -2,6 +2,8 @@
 #define FIFOLECTURA_H_
 
 #include "Fifo.h"
+#include <unistd.h>
+#include <fcntl.h>
 
 class FifoLectura : public Fifo {
 public:
