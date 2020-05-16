@@ -1,6 +1,6 @@
 #include "Logger.h"
 
-const int Logger::BUFFSIZE = 10;
+const int Logger::BUFFSIZE = 100;
 const std::string Logger::FILENAME = "../log.txt";
 
 

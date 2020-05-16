@@ -1,5 +1,5 @@
 #include "Delivery.h"
-Delivery::Delivery(Logger * logger, std::string channel_name): Employee(0), channel_name(channel_name){}
+Delivery::Delivery(Logger * logger, std::string channel_name): Employee(0), logger(logger), channel_name(channel_name){}
 
 std::string Delivery::identify() const {
     return "Delivery";
@@ -10,11 +10,12 @@ void Delivery::run(){
 	this->read_channel->abrir(); //blocking until open for write
 
     CookerMan::Product product;
-	size_t read_bytes = read_channel->leer(&product,sizeof(CookerMan::Product));
+	std::cout << "[Delivery]  a punto de leer por primera vez------------------------"  << std::endl;
+	size_t read_bytes = this->read_channel->leer(&product, sizeof(CookerMan::Product));
 	while(read_bytes > FIFO_EOF ){
 		this->logger->log(this, product.toString());
 		std::cout << "[Delivery] " << product.toString() << std::endl;
-        read_bytes = read_channel->leer(&product,sizeof(CookerMan::Product));
+        read_bytes = this->read_channel->leer(&product, sizeof(CookerMan::Product));
     } 
     if(read_bytes == ERROR){
         throw std::runtime_error("Error reading orders fifo");     

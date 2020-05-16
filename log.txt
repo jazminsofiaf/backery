@@ -5,5 +5,11 @@
 [Sourdough]  Dough { num = 1 }
 [Baker 1]  took dough pice  Dough { num = 1 }
 [Baker 1]  Order { id = 7, product = PAN}
+[Delivery] Product{ Dough { num = 1 },  Order { id = 3, product = PAN}}
 [Sourdough]  Dough { num = 2 }
 [Baker 1]  took dough pice  Dough { num = 2 }
+[Baker 1]  Order { id = 11, product = PAN}
+[Delivery] Product{ Dough { num = 2 },  Order { id = 7, product = PAN}}
+[Sourdough]  Dough { num = 3 }
+[Baker 1]  took dough pice  Dough { num = 3 }
+[Delivery] Product{ Dough { num = 3 },  Order { id = 11, product = PAN}}

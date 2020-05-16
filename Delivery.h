@@ -11,7 +11,7 @@
 using namespace std;
 class Delivery: public Employee{
     private:
-         Logger * logger;
+        Logger * logger;
         std::string channel_name;
         FifoLectura * read_channel;
         
