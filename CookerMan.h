@@ -14,17 +14,18 @@ using namespace std;
 
 class CookerMan : public Employee{
     protected:
+        Logger * logger;
         std::string sourdough_channel_name;
         std::string orders_channel_name;
         std::string delivery_channel_name;
-        FifoShared * sourdough_channel;
-        FifoShared * orders_channel;
+        FifoLectura * sourdough_channel;
+        FifoLectura * orders_channel;
         FifoEscritura * delivery_channel;
 
         
     public:
         //constructor
-        CookerMan(int id_num,   std::string sourdough_channel_name, 
+        CookerMan(int id_num, Logger * logger,  std::string sourdough_channel_name, 
                                 std::string orders_channel_name, 
                                 std::string delivery_channel_name);
         void run() override;

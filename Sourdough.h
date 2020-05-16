@@ -15,10 +15,11 @@ class Sourdough: public Employee{
         std::string channel_name;
         FifoEscritura * write_channel;
         int num;
+        Logger * logger;
         
     public:
         //constructor
-        Sourdough( std::string channel_name);
+        Sourdough(Logger * logger, std::string channel_name);
         void run() override;
         void stop() override;
         std::string identify() const override; 
@@ -26,7 +27,7 @@ class Sourdough: public Employee{
         struct Dough{
             int num;
             std::string toString(){
-                return " Dough{ num = " +std::to_string(num) +" }";
+                return " Dough { num = " +std::to_string(num) +" }";
             }
         };
 

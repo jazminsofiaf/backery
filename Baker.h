@@ -6,10 +6,10 @@
 using namespace std;
 
 class Baker: public CookerMan{
-        
+
     public:
         //constructor
-        Baker(int id_num, std::string sourdough_channel_name, std::string orders_channel_name, std::string delivery_channel_name);
+        Baker(int id_num, Logger * logger, std::string sourdough_channel_name, std::string orders_channel_name, std::string delivery_channel_name);
         std::string identify() const override; 
 
 };

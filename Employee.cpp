@@ -24,5 +24,13 @@ void Employee::stop(){
             std::cerr << this-> identify() << " bad argument passed to waitpid" << std::endl;
         }
     }
+    if(WIFEXITED(status)){//if child is completed normally after sleep is over
+       std::cerr << this-> identify() << "terminates normally : "<<WEXITSTATUS(status) << std::endl;
+    }
+    if(WIFSIGNALED(status)){//true if child was killed by any signal from other process or same process
+        std::cerr << this-> identify() <<"terminates by signal : " << WTERMSIG(status) << std::endl;
+        //Signal 13 means something is written to a pipe where nothing is read from anymore
+        //Signal 11 (SIGSEGV, also known as segmentation violation) means that the program accessed a memory location that was not assigned to it
+    }
 	std::cout <<"[" << this-> identify() << "] stoped " << status << std::endl;
 }

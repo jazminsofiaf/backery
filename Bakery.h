@@ -23,13 +23,13 @@ class Bakery{
         list<Recepcionist> allRecepcionists;
         list<Pizzamaker> allPizzaMaker;
         list<Baker> allBakers;
-        Sourdough sourdough;
-		Delivery delivery;
+        Sourdough  * sourdough;
+		Delivery * delivery;
 
     public:
         //constructor
-        Bakery();
-        void initWorkDay(ArgsHelper::args * args);
+        Bakery(Logger * logger);
+        void initWorkDay(ArgsHelper::args * args, Logger * logger);
         void endWorkDay();
 
 };

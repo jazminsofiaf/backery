@@ -14,21 +14,23 @@ using namespace std;
 
 int main(int argc, char** argv){
 	SIGINT_Handler sigint_handler;
-	SignalHandler :: getInstance()->registrarHandler ( SIGINT,&sigint_handler, 0);
-	Bakery bakery;
+	SignalHandler::getInstance()->registrarHandler ( SIGINT,&sigint_handler, 0);
+	Logger * logger = NULL;
+	Bakery bakery(logger);
 	while ( sigint_handler.getGracefulQuit() == 0 ) { //loop for handle SIGINT
 		ArgsHelper::args * args;
 		try{
 			args = ArgsHelper::parse(argc, argv);
-			Logger::init();
+			logger = new Logger();
 		}catch(const runtime_error& arguments_error){
 			return ERROR;
 		}
-		bakery.initWorkDay(args);
+		bakery.initWorkDay(args, logger);
 		break;
+	
 	}
 	bakery.endWorkDay();
-	Logger::destruir();
+	logger->destruir();
 	SignalHandler::destruir();
 	return OK;
 }

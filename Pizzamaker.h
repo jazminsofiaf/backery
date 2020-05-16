@@ -7,10 +7,9 @@ using namespace std;
 
 
 class Pizzamaker: public CookerMan{
-        
     public:
         //constructor
-        Pizzamaker(int id_num, std::string sourdough_channel_name, std::string orders_channel_name, std::string delivery_channel_name);
+        Pizzamaker(int id_num, Logger* logger, std::string sourdough_channel_name, std::string orders_channel_name, std::string delivery_channel_name);
         std::string identify() const override; 
 
 };

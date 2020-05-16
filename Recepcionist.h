@@ -18,6 +18,7 @@ using namespace std;
 
 class Recepcionist : public Employee {
     private:
+        Logger * logger;
         std::string bread_channel_name;
         std::string pizza_channel_name;
         int read_start;
@@ -35,6 +36,7 @@ class Recepcionist : public Employee {
     public:
         //constructor
         Recepcionist(int id_num, 
+                    Logger * logger, 
                     std::string bread_name, std::string pizza_name,
                     int start, int end, std::string file_name);
         void run() override;

@@ -1,5 +1,5 @@
 #include "Delivery.h"
-Delivery::Delivery(std::string channel_name): Employee(0), channel_name(channel_name){}
+Delivery::Delivery(Logger * logger, std::string channel_name): Employee(0), channel_name(channel_name){}
 
 std::string Delivery::identify() const {
     return "Delivery";
@@ -12,7 +12,7 @@ void Delivery::run(){
     CookerMan::Product product;
 	size_t read_bytes = read_channel->leer(&product,sizeof(CookerMan::Product));
 	while(read_bytes > FIFO_EOF ){
-		Logger::log(this, product.toString());
+		this->logger->log(this, product.toString());
 		std::cout << "[Delivery] " << product.toString() << std::endl;
         read_bytes = read_channel->leer(&product,sizeof(CookerMan::Product));
     } 

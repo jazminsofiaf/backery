@@ -1,10 +1,13 @@
 
 #include "Recepcionist.h"
 Recepcionist::Recepcionist(int id_num, 
+                            Logger * logger, 
                             std::string bread_name, std::string pizza_name,
                             int start, int end, std::string file_name)
-                            : Employee(id_num), bread_channel_name(bread_name), pizza_channel_name(pizza_name),
+                            : Employee(id_num), logger(logger), 
+                            bread_channel_name(bread_name), pizza_channel_name(pizza_name),
                             read_start(start), read_end(end), orders_file(file_name){
+                        
     this->bread_channel = new FifoEscritura(this->bread_channel_name);
     this->pizza_channel = new FifoEscritura(this->pizza_channel_name);
     this->channel_map[BREAD] = this->bread_channel;
@@ -14,7 +17,7 @@ Recepcionist::Recepcionist(int id_num,
 void Recepcionist::run(){
     //other side already open
     this->bread_channel->abrir();
-    this->pizza_channel->abrir(); 
+    //this->pizza_channel->abrir(); 
 
     std::ifstream file(this->orders_file, ios::in | ios::binary);
     int pos = this->read_start;
@@ -58,7 +61,7 @@ void Recepcionist::tryToSend(std::string str_order, int pos){
         order.id = pos; //set last read position as order id
         order.product = str_order;
         channel->escribir(&order, sizeof(Recepcionist::Order));
-        Logger::log(this, order.toString());
+        this->logger->log(this, order.toString());
         std::cout << this->identify() << order.toString() << endl;
     }
 }
