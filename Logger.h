@@ -12,6 +12,7 @@
 #include "Fifos/FifoLectura.h"
 #include "Fifos/FifoEscritura.h"
 #include "EndChildException.h"
+#include "Lock.h"
 
 #define LOGGER_FIFO "logger_fifo" 
 
@@ -30,6 +31,7 @@ private:
     pid_t process_id;
     void writeToFile();
     size_t seek(std::string & str_message, size_t position);
+    Lock * lock;
 
 public:
 

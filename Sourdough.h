@@ -20,7 +20,7 @@ class Sourdough: public Employee{
     public:
         //constructor
         Sourdough(Logger * logger, std::string channel_name);
-        ~Sourdough();
+       // ~Sourdough();
         void run() override;
         void stop() override;
         std::string identify() const override; 

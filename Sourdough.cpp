@@ -34,7 +34,8 @@ void Sourdough::stop(){
 	delete this->write_channel;
 
 }
-	
+/*	
 Sourdough :: ~Sourdough() {
 	std::cout << "calling sourfough detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
 }
+*/

@@ -13,17 +13,19 @@ Logger::Logger(){
     
     this->write_channel = new FifoEscritura(LOGGER_FIFO);
 	this->write_channel->abrir();
+    this->lock =  new Lock("log.txt");
     
 }
 
 //writes are atomic on pipe if buffer size is not greater than PIPE_BUF
 void Logger::log(const Employee * employee, const std::string message){
+   this->lock->tomarLock();
         if(this->write_channel == NULL){
             std::string error_msg = "Error: logger not initialized";
             std::cerr << error_msg << std::endl;
             throw std::runtime_error(error_msg);
         }
-        std::string formated_message = "[" + employee->identify() + "] " + message +"\n";
+        std::string formated_message = "[" + employee->identify() + "] " + message+"\n";
 
         char buffer[Logger::BUFFSIZE];
         size_t  start_position = this->seek(formated_message, 0);
@@ -31,16 +33,19 @@ void Logger::log(const Employee * employee, const std::string message){
         while( end_position <= formated_message.length()){
             std::string::iterator msg_start  = formated_message.begin() + start_position;
             std::string::iterator msg_end = formated_message.begin() + end_position;
-            memset(buffer, '\0', sizeof(buffer)); 
+            memset(buffer, 'A', sizeof(buffer)); 
             std::copy(msg_start, msg_end, buffer);
-            this->write_channel->escribir(buffer, Logger::BUFFSIZE );
+            
+            size_t sent = this->write_channel->escribir(buffer, Logger::BUFFSIZE );
+            std::cout <<"{Logger} writing ---------------------------------> " << buffer << sent << std::endl;
+            this->lock->escribir(buffer, Logger::BUFFSIZE);
             if(end_position == formated_message.length()){
                 break;
             }
             start_position = this->seek(formated_message, end_position);
             end_position = this->seek(formated_message, end_position + Logger::BUFFSIZE);
         }
-        
+    this->lock->liberarLock();  
     }
 
  size_t Logger::seek(std::string & str_message, size_t position) {
@@ -84,11 +89,12 @@ void Logger::writeToFile(){
         std::cout  << "[logger] reading fifo: " << static_cast<int>(bytesLeidos) << std::strerror(errno) << std::endl;
 	
         while(bytesLeidos > FIFO_EOF){
+                std::cout <<"{Logger} reading <---------------------------------  " << buffer << bytesLeidos << std::endl;
                 std::size_t end_line = std::string(buffer).find("\n");
-                end_line = ( end_line == std::string::npos ) ? bytesLeidos : 1+ end_line;
+                end_line = ( end_line == std::string::npos ) ? bytesLeidos : 1 + end_line;
                 std::string mensaje = buffer;
                 
-                mensaje.resize ( end_line );
+                mensaje.resize ( bytesLeidos );    
                 (*this->outputFile) << mensaje;
                 this->outputFile->flush();
 

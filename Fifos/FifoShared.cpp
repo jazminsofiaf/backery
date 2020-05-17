@@ -5,7 +5,7 @@ FifoShared::FifoShared(const std::string nombre) : FifoLectura(nombre) {
 }
 
 FifoShared::~FifoShared() {
-    std::cout << "calling fifo shared detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
+    //std::cout << "calling fifo shared detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
     //delete this->lock;
 }
 

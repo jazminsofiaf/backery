@@ -28,6 +28,11 @@ int Lock :: tomarLock () {
 	return fcntl ( this->fd,F_SETLKW,&(this->fl) );
 }
 
+ssize_t Lock :: escribir ( const void* buffer,const ssize_t buffsize ) const {
+	lseek ( this->fd,0,SEEK_END );
+	return write ( this->fd,buffer,buffsize );
+}
+
 int Lock :: liberarLock () {
 	this->fl.l_type = F_UNLCK;
 	return fcntl ( this->fd,F_SETLK,&(this->fl) );
