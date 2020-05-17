@@ -33,7 +33,7 @@ void Logger::log(const Employee * employee, const std::string message){
         while( end_position <= formated_message.length()){
             std::string::iterator msg_start  = formated_message.begin() + start_position;
             std::string::iterator msg_end = formated_message.begin() + end_position;
-            memset(buffer, 'A', sizeof(buffer)); 
+            memset(buffer, '\0', sizeof(buffer)); 
             std::copy(msg_start, msg_end, buffer);
             
             size_t sent = this->write_channel->escribir(buffer, Logger::BUFFSIZE );
@@ -94,7 +94,7 @@ void Logger::writeToFile(){
                 end_line = ( end_line == std::string::npos ) ? bytesLeidos : 1 + end_line;
                 std::string mensaje = buffer;
                 
-                mensaje.resize ( bytesLeidos );    
+                mensaje.resize ( end_line );    
                 (*this->outputFile) << mensaje;
                 this->outputFile->flush();
 

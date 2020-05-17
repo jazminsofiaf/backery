@@ -1,6 +1,5 @@
 [Recepcionist 1]  Order { id = 1, product = PAN }
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA[Baker 1]  Order { id = 1, product = PAN }
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA[Sourdough]  Dough { num = 1 }
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA[Baker 1]  took dough pice  Dough { num = 1 }
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA[Delivery] Product {  Dough { num = 1 },  Order { id = 1, product = PAN } by = Baker 1 }
-AAAAAAAAAAA
+[Baker 1]  Order { id = 1, product = PAN }
+[Sourdough]  Dough { num = 1 }
+[Baker 1]  took dough pice  Dough { num = 1 }
+[Delivery] Product {  Dough { num = 1 },  Order { id = 1, product = PAN } by = Baker 1 }
