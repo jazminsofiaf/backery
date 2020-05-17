@@ -6,7 +6,8 @@ void Employee::start(){
     pid_t pid = fork ();
 	if ( pid == CHILD_PD ) {
         this->run();
-        exit(OK); //no detructor called
+        throw EndChildException();
+        //exit(OK); //no detructor called
 	}
 	std::cout << this-> identify() <<" pid: "<<pid << std::endl;
 	this->process_id = pid;

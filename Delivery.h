@@ -18,6 +18,7 @@ class Delivery: public Employee{
     public:
         //constructor
         Delivery( Logger * logger, std::string channel_name);
+        //~Delivery();
         void run() override;
         void stop() override;
         std::string identify() const override; 

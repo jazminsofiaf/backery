@@ -3,15 +3,18 @@
 
 #include "FifoLectura.h"
 #include "../Constant.h"
-#include "../LockFile.h"
+#include "../Lock.h"
 #include <unistd.h>
 #include <fcntl.h>
 
 class FifoShared : public FifoLectura {
+private:
+	Lock * lock;
 public:
+
 	FifoShared(const std::string nombre);
 	~FifoShared();
-	ssize_t leer(void* buffer,const ssize_t buffsize) const;
+	ssize_t leer(void* buffer,const ssize_t buffsize) const ;
 };
 
 #endif

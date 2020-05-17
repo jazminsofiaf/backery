@@ -10,4 +10,6 @@ std::string Pizzamaker::identify() const {
     return "PizzaMaker "+std::to_string(this->id);
 }
 
+Pizzamaker::~Pizzamaker() {}
+
 

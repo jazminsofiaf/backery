@@ -10,7 +10,7 @@ void Delivery::run(){
 	this->read_channel->abrir(); //blocking until open for write
 
     CookerMan::Product product;
-	std::cout << "[Delivery]  a punto de leer por primera vez------------------------"  << std::endl;
+	std::cout << "[Delivery]  a punto de leer por primera vez"  << std::endl;
 	size_t read_bytes = this->read_channel->leer(&product, sizeof(CookerMan::Product));
 	while(read_bytes > FIFO_EOF ){
 		this->logger->log(this, product.toString());
@@ -28,4 +28,12 @@ void Delivery::run(){
 
 void Delivery::stop(){
 	Employee::stop();
+	
 }
+
+/*
+Delivery:: ~Delivery() {
+	delete this->read_channel;
+	std::cout << "calling Delivery detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
+}
+*/

@@ -14,12 +14,11 @@ CookerMan::CookerMan(int id_num,  Logger * logger,
 void CookerMan::run(){
     
     this->orders_channel = new FifoShared(this->orders_channel_name);
-	this->orders_channel->abrir(); //blocked until recepcionist opem for write
-
     this->sourdough_channel = new FifoShared(this->sourdough_channel_name); 
-	this->sourdough_channel->abrir(); //blocked until sourdough opem for write
-
     this->delivery_channel = new FifoEscritura(this->delivery_channel_name);
+    
+    this->orders_channel->abrir(); //blocked until recepcionist opem for write
+	this->sourdough_channel->abrir(); //blocked until sourdough opem for write
 	this->delivery_channel->abrir(); //blocked until sourdough opem for read
 
 	Recepcionist::Order order;
@@ -57,9 +56,9 @@ void CookerMan::run(){
         std::cout << this->identify() << " Error reading orders fifo: " << std::strerror(errno) << std::endl;      
     } 
     std::cout << this->identify() << " loop ends " << std::endl;
-    //this->sourdough_channel->close_fifo();
+    this->sourdough_channel->close_fifo();
     this->orders_channel->close_fifo();	 
-    //this->orders_channel->eliminar();
+    this->orders_channel->eliminar();
     std::cout << this->identify() << " loop ends FIN " << std::endl;
 }
 
@@ -68,4 +67,13 @@ void CookerMan::run(){
 void CookerMan::stop(){
     Employee::stop();
 }
- 
+
+/*
+CookerMan::~CookerMan(){
+    //delete this->orders_channel;    
+    //delete this->sourdough_channel;
+    //delete this->delivery_channel;
+
+}
+*/
+  

@@ -19,12 +19,12 @@ void Recepcionist::run(){
     this->bread_channel->abrir();
     this->pizza_channel->abrir(); 
 
-    std::ifstream file(this->orders_file, ios::in | ios::binary);
+    LockFile file(this->orders_file, this->read_start, this->read_end);
+    file.getSharedLock();
     int pos = this->read_start;
-    file.seekg(pos);
-    char c;
     std::string order = "";
-  	while (pos < this->read_end && file.get(c)){
+    char c;
+    while (pos < this->read_end && file.getChar(c) ){ // standard C I/O file reading loop
         if(this->isDelimiter(c)){
             this->tryToSend(order, pos); 
             order = ""; 
@@ -36,7 +36,8 @@ void Recepcionist::run(){
     if(order.empty()){
         return; //no words cut
     }
-    while(file.get(c)){ //read last order
+    while(file.getChar(c)){ //read last order
+        putchar(c);
         if(this->isDelimiter(c)){  
             this->tryToSend(order, pos);
             break;
@@ -45,6 +46,8 @@ void Recepcionist::run(){
         }
     }  
     //signal to stop loop  for baker and pizza man
+
+    file.liberarLock();
     this->bread_channel->close_fifo();
     this->pizza_channel->close_fifo();    
 }

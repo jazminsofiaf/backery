@@ -1,26 +1,28 @@
 #include "LockFile.h"
 
-LockFile :: LockFile ( const std::string nombre ) {
 
-	this->nombre = nombre;
-	this->fl.l_type = F_WRLCK;
-	this->fl.l_whence = SEEK_SET;
-	this->fl.l_start = 0;
-	this->fl.l_len = 0;
-	this->fd = open ( this->nombre.c_str(), O_CREAT|O_WRONLY, 0777 );
+LockFile :: LockFile ( const std::string nombre, int start, int end ) : Lock(nombre, &this->file, start, end, F_RDLCK){
+	fseek(this->file, start, SEEK_SET);	
 }
 
-int LockFile :: tomarLock () {
-	this->fl.l_type = F_WRLCK;
-	return fcntl ( this->fd,F_SETLKW,&(this->fl) );
-}
 
-int LockFile :: liberarLock () {
+int LockFile :: getSharedLock(){
 	this->fl.l_type = F_UNLCK;
-	return fcntl ( this->fd,F_SETLK,&(this->fl) );
+	return fcntl (this->fd,F_SETLK,&(this->fl) );
+	
+}
+
+bool LockFile :: getChar(char & c){
+	int char_read;
+	if( (char_read = fgetc(file)) == EOF ){
+		return false;
+	} 
+	putchar(char_read);
+	c = char_read;
+	return true;
 }
 
 LockFile :: ~LockFile () {
-	close ( this->fd );
+	fclose ( this->file);
 }
  

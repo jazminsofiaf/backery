@@ -28,7 +28,8 @@ class Bakery{
 
     public:
         //constructor
-        Bakery(Logger * logger);
+        Bakery();
+       // ~Bakery();
         void initWorkDay(ArgsHelper::args * args, Logger * logger);
         void endWorkDay();
 

@@ -1,6 +1,6 @@
 #include "Bakery.h"
 
-Bakery::Bakery(Logger * logger){} 
+Bakery::Bakery(){} 
 
 
 void Bakery::initWorkDay( ArgsHelper::args * args, Logger * logger){
@@ -46,7 +46,7 @@ void Bakery::endWorkDay(){
 	   allBakers.pop_back();
 	   baker.stop();
    	}	 
-	this->sourdough->stop();
+	this->sourdough->stop();	
 
 	this->delivery->stop();
 	
@@ -57,4 +57,11 @@ void Bakery::endWorkDay(){
    	}	
 
 }
+/*
+Bakery :: ~Bakery() {
+	std::cout << "calling Bakery detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
+	//delete this->sourdough;
+	//delete this->delivery;
+}
+*/
     

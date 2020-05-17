@@ -6,6 +6,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include "Constant.h"
+#include "EndChildException.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ class Employee{
     public:
         //constructor
         Employee(int id);
+
         void start();
         virtual void run() = 0;
         virtual void stop();

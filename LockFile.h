@@ -4,20 +4,21 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string>
+#include "Lock.h"
 
-class LockFile {
+class LockFile : public Lock {
 
 private:
-	struct flock fl;
-	int fd;
-	std::string nombre;
+	FILE * file;
 
 public:
-	LockFile ( const std::string nombre );
+	LockFile ( const std::string nombre, int start, int end);
 	~LockFile();
 
-	int tomarLock ();
-	int liberarLock ();
+	int getSharedLock();
+
+	bool getChar(char & c);
+
 };
 
 #endif /* LOCKFILE_H_ */

@@ -6,9 +6,11 @@
 
 #include <fstream> 
 #include <locale>
+#include <fcntl.h>
 #include <map>
 #include "Constant.h"
 #include "ProductEnum.h"
+#include "LockFile.h"
 #include "Fifos/FifoEscritura.h"
 #include "Fifos/FifoLectura.h"
 #include "Logger.h"

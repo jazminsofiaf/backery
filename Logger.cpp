@@ -63,6 +63,9 @@ void Logger::destruir () {
     int status;
     waitpid(this->process_id, &status, 0);
     this->outputFile->close(); 
+    //delete this->outputFile;
+    //delete this->write_channel;
+    //delete this->read_channel;    
 }
 
 
@@ -107,9 +110,9 @@ void Logger::writeToFile(){
             throw std::runtime_error(error_msg);
 	    } 
         this->read_channel->eliminar();
-        exit(OK);
+        throw EndChildException();
     }
-    this->process_id = pid;
+    this->process_id = pid; 
     std::cout << "[Logger] pid: " <<  process_id << std::endl;
 
 }

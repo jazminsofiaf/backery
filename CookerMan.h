@@ -30,7 +30,7 @@ class CookerMan : public Employee{
                                 std::string delivery_channel_name);
         void run() override;
         void stop() override;
-        virtual ~CookerMan() = default;
+        //virtual ~CookerMan();
 
         struct Product{
             Recepcionist::Order order;
