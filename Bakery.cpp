@@ -9,13 +9,12 @@ void Bakery::initWorkDay( ArgsHelper::args * args, Logger * logger){
 	this->delivery = new Delivery(logger, DELIVERY_CHANNEL);
 	this->delivery->start();
 
-	/*
+	
 	for(int num = 1;  num <= args->pizzeros ; num=num+1){
 			Pizzamaker pizza_maker(num, logger, DOUGH_CHANNEL, PIZZA_CHANNEL, DELIVERY_CHANNEL);
 			pizza_maker.start();
 			this->allPizzaMaker.push_front(pizza_maker);
 	}
-	*/
 
 	for(int num = 1;  num <= args->panaderos ; num=num+1){
 			Baker baker(num, logger,DOUGH_CHANNEL, BREAD_CHANNEL, DELIVERY_CHANNEL);

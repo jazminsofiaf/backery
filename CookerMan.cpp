@@ -27,7 +27,7 @@ void CookerMan::run(){
     std::cout << this->identify() << " a punto de leer orden la primera vez " <<std::endl;
 	size_t read_bytes_order = orders_channel->leer(&order,sizeof(Recepcionist::Order));
     std::cout << this->identify() << "reading orders fifo: " << static_cast<int>(read_bytes_order) << std::strerror(errno) << std::endl;
-	while(read_bytes_order > FIFO_EOF ){
+	while(static_cast<int>(read_bytes_order) > FIFO_EOF ){
 		this->logger->log(this, order.toString());
         std::cout << this->identify() << order.toString() << endl;
 
@@ -36,7 +36,7 @@ void CookerMan::run(){
 
         if(read_bytes_dough == FIFO_EOF || read_bytes_dough == ERROR){
             std::cout << this->identify() << " Error reading sourdough fifo: " << static_cast<int>(read_bytes_dough) << std::strerror(errno) << std::endl;
-            throw std::runtime_error("Error reading sourdough fifo");   
+            break; 
         } 
        
         std::cout << this->identify() << " took dough pice " << dough_piece.toString() <<std::endl;
@@ -52,7 +52,7 @@ void CookerMan::run(){
         read_bytes_order = orders_channel->leer(&order,sizeof(Recepcionist::Order));
     } 
     if(read_bytes_order == ERROR){
-        throw std::runtime_error("Error reading orders fifo");     
+        std::cout << this->identify() << " Error reading orders fifo: " << std::strerror(errno) << std::endl;      
     } 
     std::cout << this->identify() << " loop ends " << std::endl;
     //this->sourdough_channel->close_fifo();

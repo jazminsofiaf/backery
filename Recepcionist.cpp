@@ -17,7 +17,7 @@ Recepcionist::Recepcionist(int id_num,
 void Recepcionist::run(){
     //other side already open
     this->bread_channel->abrir();
-    //this->pizza_channel->abrir(); 
+    this->pizza_channel->abrir(); 
 
     std::ifstream file(this->orders_file, ios::in | ios::binary);
     int pos = this->read_start;
