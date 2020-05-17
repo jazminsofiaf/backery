@@ -47,7 +47,7 @@ class Recepcionist : public Employee {
             int id;
             std::string product;
             std::string toString(){
-                return " Order { id = " +std::to_string(id) +", product = "+ product +"}";
+                return " Order { id = " +std::to_string(id) +", product = "+ product +" }";
             }
         };
 };

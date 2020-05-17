@@ -13,10 +13,10 @@ CookerMan::CookerMan(int id_num,  Logger * logger,
 
 void CookerMan::run(){
     
-    this->orders_channel = new FifoLectura(this->orders_channel_name);
+    this->orders_channel = new FifoShared(this->orders_channel_name);
 	this->orders_channel->abrir(); //blocked until recepcionist opem for write
 
-    this->sourdough_channel = new FifoLectura(this->sourdough_channel_name); 
+    this->sourdough_channel = new FifoShared(this->sourdough_channel_name); 
 	this->sourdough_channel->abrir(); //blocked until sourdough opem for write
 
     this->delivery_channel = new FifoEscritura(this->delivery_channel_name);
@@ -24,9 +24,10 @@ void CookerMan::run(){
 
 	Recepcionist::Order order;
     CookerMan::Product product;
-    std::cout << this->identify() << " a punto de leer orden la primera vez " <<std::endl;
+
+    std::cout << this->identify() << " a punto de leer orden la primera vez " << std::strerror(errno) <<std::endl;
 	size_t read_bytes_order = orders_channel->leer(&order,sizeof(Recepcionist::Order));
-    std::cout << this->identify() << "reading orders fifo: " << static_cast<int>(read_bytes_order) << std::strerror(errno) << std::endl;
+    std::cout << this->identify() << " reading orders fifo: << static_cast<int>(read_bytes_order)  " << std::strerror(errno) << std::endl;
 	while(static_cast<int>(read_bytes_order) > FIFO_EOF ){
 		this->logger->log(this, order.toString());
         std::cout << this->identify() << order.toString() << endl;
@@ -45,6 +46,7 @@ void CookerMan::run(){
  
         product.order = order;
         product.dough = dough_piece;
+        product.made_by = this->identify();
         std::cout << "por escribir "<< product.toString()<<endl;
         std::cout << "escribiendo "<< this->delivery_channel->escribir(&product, sizeof(CookerMan::Product)) << endl;
             

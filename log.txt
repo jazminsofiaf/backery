@@ -1,15 +1,15 @@
-[Recepcionist 1]  Order { id = 3, product = PAN}
-[Recepcionist 1]  Order { id = 7, product = PAN}
-[Recepcionist 1]  Order { id = 11, product = PAN}
-[Baker 1]  Order { id = 3, product = PAN}
+[Recepcionist 1]  Order { id = 3, product = PAN }
+[Baker 4]  Order { id = 3, product = PAN }
+[Recepcionist 1]  Order { id = 7, product = PAN }
+[Recepcionist 1]  Order { id = 11, product = PAN }
+[Baker 6]  Order { id = 7, product = PAN }
+[Baker 2]  Order { id = 11, product = PAN }
 [Sourdough]  Dough { num = 1 }
-[Baker 1]  took dough pice  Dough { num = 1 }
-[Baker 1]  Order { id = 7, product = PAN}
-[Delivery] Product{ Dough { num = 1 },  Order { id = 3, product = PAN}}
+[Baker 2]  took dough pice  Dough { num = 1 }
+[Delivery] Product {  Dough { num = 1 },  Order { id = 11, product = PAN } by = Baker 2 }
 [Sourdough]  Dough { num = 2 }
-[Baker 1]  took dough pice  Dough { num = 2 }
-[Baker 1]  Order { id = 11, product = PAN}
-[Delivery] Product{ Dough { num = 2 },  Order { id = 7, product = PAN}}
+[Baker 4]  took dough pice  Dough { num = 2 }
+[Delivery] Product {  Dough { num = 2 },  Order { id = 3, product = PAN } by = Baker 4 }
 [Sourdough]  Dough { num = 3 }
-[Baker 1]  took dough pice  Dough { num = 3 }
-[Delivery] Product{ Dough { num = 3 },  Order { id = 11, product = PAN}}
+[Baker 6]  took dough pice  Dough { num = 3 }
+[Delivery] Product {  Dough { num = 3 },  Order { id = 7, product = PAN } by = Baker 6 }

@@ -2,6 +2,8 @@
 #define FIFOSHARED_H_
 
 #include "FifoLectura.h"
+#include "../Constant.h"
+#include "../LockFile.h"
 #include <unistd.h>
 #include <fcntl.h>
 

@@ -18,8 +18,8 @@ class CookerMan : public Employee{
         std::string sourdough_channel_name;
         std::string orders_channel_name;
         std::string delivery_channel_name;
-        FifoLectura * sourdough_channel;
-        FifoLectura * orders_channel;
+        FifoShared * sourdough_channel;
+        FifoShared * orders_channel;
         FifoEscritura * delivery_channel;
 
         
@@ -35,8 +35,9 @@ class CookerMan : public Employee{
         struct Product{
             Recepcionist::Order order;
             Sourdough::Dough dough;
+            std::string made_by;
             std::string toString(){
-                return  "Product{" +dough.toString()+", "+ order.toString()+"}";
+                return  "Product { " +dough.toString()+", "+ order.toString()+" by = " + made_by +" }";
             }
         };
 };
