@@ -6,7 +6,7 @@
 #include "Fifos/FifoLectura.h"
 #include "Fifos/FifoShared.h"
 #include "Logger.h"
-#include "Recepcionist.h"
+#include "Receptionist.h"
 #include "Sourdough.h"
 #include "Employee.h"   
 using namespace std;
@@ -29,10 +29,10 @@ class CookerMan : public Employee{
                                 std::string delivery_channel_name);
         void run() override;
         void stop() override;
-        //virtual ~CookerMan();
+        ~CookerMan();
 
         struct Product{
-            Recepcionist::Order order;
+            Receptionist::Order order;
             Sourdough::Dough dough;
             std::string made_by;
             std::string toString(){

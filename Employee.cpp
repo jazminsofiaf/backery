@@ -16,15 +16,19 @@ void Employee::start(){
 
 void Employee::stop(){
     int status;
-    pid_t rc_pid = waitpid(this->process_id, &status, 0);   
-    if (rc_pid < 0) {   
+    pid_t rc_pid = waitpid(this->process_id, &status, 0);
+    if (rc_pid < 0) {
+
         if (errno == ECHILD) {
             std::cerr << this-> identify() << " child does not exist" << std::endl;
+            return;
         }
         else {
             std::cerr << this-> identify() << " bad argument passed to waitpid" << std::endl;
+            return;
         }
     }
+    std::cout <<"[" << this-> identify() << "] " << status << std::endl;
     if(WIFEXITED(status)){//if child is completed normally after sleep is over
        std::cerr << this-> identify() << " terminates normally : "<<WEXITSTATUS(status) << std::endl;
     }
@@ -33,5 +37,4 @@ void Employee::stop(){
         //Signal 13 means something is written to a pipe where nothing is read from anymore
         //Signal 11 (SIGSEGV, also known as segmentation violation) means that the program accessed a memory location that was not assigned to it
     }
-	std::cout <<"[" << this-> identify() << "] stoped " << status << std::endl;
 }

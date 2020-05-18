@@ -7,7 +7,7 @@ Pizzamaker::Pizzamaker(int id_num,
 : CookerMan(id_num, sourdough_channel_name, orders_channel_name, delivery_channel_name){}
 
 std::string Pizzamaker::identify() const {
-    return "PizzaMaker "+std::to_string(this->id);
+    return "PizzaMaker " + std::to_string(this->id);
 }
 
 Pizzamaker::~Pizzamaker() {}

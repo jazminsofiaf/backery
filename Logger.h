@@ -12,7 +12,7 @@
 #include "Fifos/FifoLectura.h"
 #include "Fifos/FifoEscritura.h"
 #include "EndChildException.h"
-#include "Lock.h"
+#include "Locks/ExclusiveFile.h"
 
 #define LOGGER_FIFO "logger_fifo" 
 
@@ -22,16 +22,9 @@ class Logger {
 
 private:
     static const int BUFFSIZE;
-	static const std::string ARCHIVO_FIFO;
-    FifoEscritura * write_channel;
-    FifoLectura * read_channel;
 
-    
-    std::fstream * outputFile;
-    pid_t process_id;
-    void writeToFile();
     size_t seek(std::string & str_message, size_t position);
-    Lock * lock;
+    ExclusiveFile * exclusiveFile;
 
 public:
     static const std::string FILENAME;
@@ -40,7 +33,7 @@ public:
 
     void log(const Employee * employee, const std::string message);
 
-    void destruir();
+    ~Logger();
 
 
 };

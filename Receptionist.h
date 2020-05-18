@@ -10,7 +10,7 @@
 #include <map>
 #include "Constant.h"
 #include "ProductEnum.h"
-#include "LockFile.h"
+#include "Locks/SharedFile.h"
 #include "Logger.h"
 #include "Fifos/FifoEscritura.h"
 #include "Fifos/FifoLectura.h"
@@ -18,7 +18,7 @@
 using namespace std;
 
 
-class Recepcionist : public Employee {
+class Receptionist : public Employee {
     private:
         std::string bread_channel_name;
         std::string pizza_channel_name;
@@ -29,16 +29,17 @@ class Recepcionist : public Employee {
         FifoEscritura * pizza_channel;
         std::map<string, FifoEscritura *> channel_map;
         bool isDelimiter(char c);
-        void tryToSend(std::string order, int pos);
+        void tryToSend(std::string order, int pos, Logger & logger);
         std::string toUpper(std::string str);
     
 
         
     public:
         //constructor
-        Recepcionist(int id_num,  
-                    std::string bread_name, std::string pizza_name,
-                    int start, int end, std::string file_name);
+        Receptionist(int id_num,
+                     std::string bread_name, std::string pizza_name,
+                     int start, int end, std::string file_name);
+        ~Receptionist();
         void run() override;
         void stop() override;
         std::string identify() const override; 

@@ -3,13 +3,12 @@
 
 #include "FifoLectura.h"
 #include "../Constant.h"
-#include "../Lock.h"
+#include "../Locks/Lock.h"
 #include <unistd.h>
 #include <fcntl.h>
 
 class FifoShared : public FifoLectura {
-private:
-	Lock * lock;
+
 public:
 
 	FifoShared(const std::string nombre);

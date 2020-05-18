@@ -10,7 +10,7 @@
 #include "Baker.h"
 #include "Delivery.h"
 #include "Pizzamaker.h"
-#include "Recepcionist.h"
+#include "Receptionist.h"
 
 #define BREAD_CHANNEL "bread"
 #define PIZZA_CHANNEL "pizza"
@@ -20,7 +20,7 @@
 
 class Bakery{
     private:
-        list<Recepcionist> allRecepcionists;
+        list<Receptionist> allReceptionists;
         list<Pizzamaker> allPizzaMaker;
         list<Baker> allBakers;
         Sourdough  * sourdough;
@@ -28,9 +28,9 @@ class Bakery{
 
     public:
         //constructor
-        Bakery();
-       // ~Bakery();
-        void initWorkDay(ArgsHelper::args * args);
+        Bakery(ArgsHelper::args * args);
+        ~Bakery();
+        void initWorkDay();
         void endWorkDay();
 
 };

@@ -14,26 +14,26 @@
 using namespace std;
 
 int main(int argc, char** argv){
-	SIGINT_Handler sigint_handler;
-	SignalHandler::getInstance()->registrarHandler ( SIGINT,&sigint_handler, 0);
-	Bakery bakery;
-	while ( sigint_handler.getGracefulQuit() == 0 ) { //loop for handle SIGINT
-		ArgsHelper::args * args;
-		try{
-			args = ArgsHelper::parse(argc, argv);
-		} catch (const runtime_error& arguments_error){
-			return ERROR;
-		}
-		try{
-			bakery.initWorkDay(args);
-		} catch (const EndChildException& e){
-	
-			return OK;
-		}
+	ArgsHelper::args *args;
+    try {
+        args = ArgsHelper::parse(argc, argv);
+    } catch (const runtime_error& arguments_error){
+        return ERROR;
+    }
+
+    Bakery bakery(args);
+    SIGINT_Handler sigint_handler;
+    SignalHandler::getInstance()->registrarHandler ( SIGINT,&sigint_handler, 0);
+    while ( sigint_handler.getGracefulQuit() == 0 ) { //loop for handle SIGINT
+        try {
+            bakery.initWorkDay();
+		} catch (const EndChildException& child) {
+            return OK;
+        }
 		break;
-	
 	}
-	bakery.endWorkDay();
+    bakery.endWorkDay();
+	//delete bakery;
 	SignalHandler::destruir();
 	return OK;
 }
