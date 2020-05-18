@@ -1,22 +1,24 @@
 #include "Delivery.h"
-Delivery::Delivery(std::string channel_name): Employee(0), channel_name(channel_name){}
+Delivery::Delivery(std::string channel_name): Employee(0), channel_name(channel_name){
+    this->read_channel = new FifoLectura(this->channel_name);
+    this->logger = new Logger();
+}
 
 std::string Delivery::identify() const {
     return "Delivery";
 }
 
 void Delivery::run(){
-	this->read_channel = new FifoLectura(this->channel_name);
+
 	this->read_channel->abrir(); //blocking until cooker opens for write
 
-	Logger logger;
 
     CookerMan::Product product;
 	std::cout << "[Delivery]  a punto de leer por primera vez"  << std::endl;
 	size_t read_bytes = this->read_channel->leer(&product, sizeof(CookerMan::Product));
 	while(read_bytes > FIFO_EOF ){ // all cookers closed write channel
 
-        logger.log(this, product.toString());
+        this->logger->log(this, product.toString());
 
         std::cout << "[Delivery] " << product.toString() << std::endl;
         read_bytes = this->read_channel->leer(&product, sizeof(CookerMan::Product));
@@ -36,5 +38,6 @@ void Delivery::stop(){
 
 
 Delivery:: ~Delivery() {
-	//delete this->read_channel;
+	delete this->read_channel;
+    delete this->logger;
 }

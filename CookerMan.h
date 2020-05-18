@@ -20,6 +20,7 @@ class CookerMan : public Employee{
         FifoShared * sourdough_channel;
         FifoShared * orders_channel;
         FifoEscritura * delivery_channel;
+        Logger * logger;
 
         
     public:

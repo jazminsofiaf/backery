@@ -13,6 +13,7 @@ class Delivery: public Employee{
     private:
         std::string channel_name;
         FifoLectura * read_channel;
+        Logger * logger;
         
     public:
         //constructor

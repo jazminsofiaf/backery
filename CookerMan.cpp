@@ -13,6 +13,7 @@ CookerMan::CookerMan(int id_num,
     this->orders_channel = new FifoShared(this->orders_channel_name);
     this->sourdough_channel = new FifoShared(this->sourdough_channel_name);
     this->delivery_channel = new FifoEscritura(this->delivery_channel_name);
+    this->logger = new Logger();
 }
 
 void CookerMan::run(){
@@ -21,7 +22,6 @@ void CookerMan::run(){
 	this->sourdough_channel->abrir(); //blocked until sourdough opem for write
 	this->delivery_channel->abrir(); //blocked until delivery opem for read
 
-    Logger logger;
 
 	Receptionist::Order order;
     CookerMan::Product product;
@@ -32,7 +32,7 @@ void CookerMan::run(){
 	while(static_cast<int>(read_bytes_order) > FIFO_EOF ){ // until receptionist  close other side
 
         
-        logger.log(this, order.toString());
+        this->logger->log(this, order.toString());
         std::cout << this->identify() << order.toString() << endl;
 
         Sourdough::Dough dough_piece;
@@ -44,7 +44,7 @@ void CookerMan::run(){
         } 
        
         std::cout << this->identify() << " took dough pice " << dough_piece.toString() << std::endl;
-        logger.log(this, " took dough pice " + dough_piece.toString());
+        this->logger->log(this, " took dough pice " + dough_piece.toString());
 
         product.order = order;
         product.dough = dough_piece;
@@ -77,6 +77,7 @@ CookerMan::~CookerMan(){
     delete this->orders_channel;
     delete this->sourdough_channel;
     delete this->delivery_channel;
+    delete this->logger;
 }
 
   

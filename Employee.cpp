@@ -39,4 +39,6 @@ void Employee::stop(){
     }
 }
 
-Employee::~Employee() {}
+Employee::~Employee() {
+    std::cout << "calling employee detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
+}

@@ -42,7 +42,8 @@ void Logger::log(const Employee * employee, const std::string message){
     return str_message.length() <= position ? str_message.length() : position;
 }
 Logger::~Logger() {
-    //delete this->exclusiveFile;
+    std::cout << "calling logger detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
+    delete this->exclusiveFile;
 }
 
 

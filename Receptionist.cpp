@@ -11,6 +11,7 @@ Receptionist::Receptionist(int id_num,
     this->pizza_channel = new FifoEscritura(this->pizza_channel_name);
     this->channel_map[BREAD] = this->bread_channel;
     this->channel_map[PIZZA] = this->pizza_channel;
+    this->logger = new Logger();
 }
 
 void Receptionist::run(){
@@ -18,7 +19,6 @@ void Receptionist::run(){
     this->bread_channel->abrir();//block until at least one cooker man open read side
     this->pizza_channel->abrir(); //block until at least one cooker man open read side
 
-    Logger logger;
     SharedFile file(this->orders_file, this->read_start, this->read_end);
     file.getSharedLock();
     int pos = this->read_start;
@@ -26,7 +26,7 @@ void Receptionist::run(){
     char c;
     while (pos < this->read_end && file.getChar(c) ){
         if(this->isDelimiter(c)){
-            this->tryToSend(order, pos, logger);
+            this->tryToSend(order, pos);
             order = ""; 
         } else{
            order += c;
@@ -36,7 +36,7 @@ void Receptionist::run(){
     if( !order.empty() ){ //a  words cut
         while(file.getChar(c)){ //read last order
             if(this->isDelimiter(c)){
-                this->tryToSend(order, pos, logger);
+                this->tryToSend(order, pos);
                 break;
             } else{
                 order += c;
@@ -52,7 +52,7 @@ bool Receptionist::isDelimiter(char c){
     return (c == '\n' || c == ' ' || c == ',' || c== '-' || c== ';');
 }
 
-void Receptionist::tryToSend(std::string str_order, int pos, Logger & logger){
+void Receptionist::tryToSend(std::string str_order, int pos){
     str_order = this->toUpper(str_order);
     if(this->channel_map.count(str_order)){
         FifoEscritura * channel = this->channel_map[str_order];
@@ -60,7 +60,7 @@ void Receptionist::tryToSend(std::string str_order, int pos, Logger & logger){
         order.id = pos; //set last read position as order id
         order.product = str_order;
         channel->escribir(&order, sizeof(Receptionist::Order));
-        logger.log(this, order.toString());
+        this->logger->log(this, order.toString());
         std::cout << this->identify() << order.toString() << endl;
     }
 }
@@ -84,5 +84,6 @@ Receptionist::~Receptionist(){
     std::cout << "calling recepcionist detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
     delete this->bread_channel;
     delete this->pizza_channel;
+    delete this->logger;
 }
 

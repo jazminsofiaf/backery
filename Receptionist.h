@@ -27,9 +27,10 @@ class Receptionist : public Employee {
         std::string orders_file;
         FifoEscritura * bread_channel;
         FifoEscritura * pizza_channel;
+        Logger * logger;
         std::map<string, FifoEscritura *> channel_map;
         bool isDelimiter(char c);
-        void tryToSend(std::string order, int pos, Logger & logger);
+        void tryToSend(std::string order, int pos);
         std::string toUpper(std::string str);
     
 
