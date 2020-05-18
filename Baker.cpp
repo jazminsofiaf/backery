@@ -8,5 +8,7 @@ std::string Baker::identify() const {
     return "Baker "+std::to_string(this->id);
 }
 
+Baker:: ~Baker(){}
+
 
 

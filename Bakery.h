@@ -20,9 +20,9 @@
 
 class Bakery{
     private:
-        list<Receptionist> allReceptionists;
-        list<Pizzamaker> allPizzaMaker;
-        list<Baker> allBakers;
+        list<Receptionist*> allReceptionists;
+        list<Pizzamaker*> allPizzaMaker;
+        list<Baker*> allBakers;
         Sourdough  * sourdough;
 		Delivery * delivery;
 

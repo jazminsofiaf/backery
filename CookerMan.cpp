@@ -8,14 +8,15 @@ CookerMan::CookerMan(int id_num,
     Employee(id_num),
     sourdough_channel_name(sourdough_channel_name),
     orders_channel_name(orders_channel_name),
-    delivery_channel_name(delivery_channel_name){}
+    delivery_channel_name(delivery_channel_name){
+
+    this->orders_channel = new FifoShared(this->orders_channel_name);
+    this->sourdough_channel = new FifoShared(this->sourdough_channel_name);
+    this->delivery_channel = new FifoEscritura(this->delivery_channel_name);
+}
 
 void CookerMan::run(){
-    
-    this->orders_channel = new FifoShared(this->orders_channel_name);
-    this->sourdough_channel = new FifoShared(this->sourdough_channel_name); 
-    this->delivery_channel = new FifoEscritura(this->delivery_channel_name);
-    
+
     this->orders_channel->abrir(); //blocked until receptionist opem for write
 	this->sourdough_channel->abrir(); //blocked until sourdough opem for write
 	this->delivery_channel->abrir(); //blocked until delivery opem for read
@@ -62,7 +63,7 @@ void CookerMan::run(){
     this->delivery_channel->close_fifo(); //signal to end delivery loop
     this->sourdough_channel->close_fifo();
     this->orders_channel->close_fifo();
-    //this->orders_channel->eliminar();
+    this->orders_channel->eliminar();
     std::cout << this->identify() << " loop ends FIN " << std::endl;
 }
 
@@ -73,9 +74,9 @@ void CookerMan::stop(){
 
 
 CookerMan::~CookerMan(){
-    //delete this->orders_channel;
-    //delete this->sourdough_channel;
-    //delete this->delivery_channel;
+    delete this->orders_channel;
+    delete this->sourdough_channel;
+    delete this->delivery_channel;
 }
 
   

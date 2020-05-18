@@ -1,5 +1,7 @@
 #include "Sourdough.h"
-Sourdough::Sourdough(std::string channel_name): Employee(0), channel_name(channel_name), num(0) {}
+Sourdough::Sourdough(std::string channel_name): Employee(0), channel_name(channel_name), num(0) {
+    this->write_channel = new FifoEscritura(this->channel_name);
+}
 
 std::string Sourdough::identify() const {
     return "Sourdough";
@@ -11,9 +13,8 @@ void Sourdough::run(){
 
 	
 	std::cout << "[Sourdough] por abrir fifo" << std::endl;
-	this->write_channel = new FifoEscritura(this->channel_name);
-	std::cout << "[Sourdough] despues de abrir fifo" << sigusr_handler.getGracefulQuit() << std::endl;
-	this->write_channel->abrir(); //other side already open
+    this->write_channel->abrir(); //other side already open
+    std::cout << "[Sourdough] despues de abrir fifo" << sigusr_handler.getGracefulQuit() << std::endl;
 	while( sigusr_handler.getGracefulQuit() == 0 ) {
 			std::cout << "[Sourdough] looping " << sigusr_handler.getGracefulQuit() << std::endl;
             sleep(1);
@@ -37,6 +38,6 @@ void Sourdough::stop(){
 }
 
 Sourdough :: ~Sourdough() {
-    //delete this->write_channel;
-	//std::cout << "calling sourfough detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
+    std::cout << "calling sourfough detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
+    delete this->write_channel;
 }

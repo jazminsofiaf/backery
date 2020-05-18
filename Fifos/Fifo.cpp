@@ -8,6 +8,7 @@ Fifo::Fifo(const std::string nombre) : nombre(nombre), fd(-1) {
 }
 
 Fifo::~Fifo() {
+    std::cout << "calling fifo detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
 }
 
 int Fifo::close_fifo() {

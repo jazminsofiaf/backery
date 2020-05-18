@@ -28,12 +28,12 @@ int main(int argc, char** argv){
         try {
             bakery.initWorkDay();
 		} catch (const EndChildException& child) {
-            return OK;
+            exit(OK);
+            //return OK;
         }
 		break;
 	}
     bakery.endWorkDay();
-	//delete bakery;
 	SignalHandler::destruir();
 	return OK;
 }

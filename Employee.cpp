@@ -30,7 +30,7 @@ void Employee::stop(){
     }
     std::cout <<"[" << this-> identify() << "] " << status << std::endl;
     if(WIFEXITED(status)){//if child is completed normally after sleep is over
-       std::cerr << this-> identify() << " terminates normally : "<<WEXITSTATUS(status) << std::endl;
+       std::cerr << this-> identify() << " terminates normally : " << WEXITSTATUS(status) << std::endl;
     }
     if(WIFSIGNALED(status)){//true if child was killed by any signal from other process or same process
         std::cerr << this-> identify() <<" terminates by signal : " << WTERMSIG(status) << std::endl;
@@ -38,3 +38,5 @@ void Employee::stop(){
         //Signal 11 (SIGSEGV, also known as segmentation violation) means that the program accessed a memory location that was not assigned to it
     }
 }
+
+Employee::~Employee() {}

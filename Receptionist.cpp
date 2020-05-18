@@ -81,7 +81,8 @@ std::string Receptionist::identify() const {
 
 }
 Receptionist::~Receptionist(){
-    //delete this->bread_channel;
-    //delete this->pizza_channel;
+    std::cout << "calling recepcionist detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
+    delete this->bread_channel;
+    delete this->pizza_channel;
 }
 
