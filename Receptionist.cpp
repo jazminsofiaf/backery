@@ -16,16 +16,19 @@ Receptionist::Receptionist(int id_num,
 
 void Receptionist::run(){
 
+    std::cout << this->identify() << " abriendo channels.." <<  std::strerror(errno) << endl;
     this->bread_channel->abrir();//block until at least one cooker man open read side
     this->pizza_channel->abrir(); //block until at least one cooker man open read side
 
     SharedFile file(this->orders_file, this->read_start, this->read_end);
+    std::cout << this->identify() << " shared lock from "<< this->read_start <<" to "<< this->read_end << endl;
     file.getSharedLock();
     int pos = this->read_start;
     std::string order = "";
     char c;
     while (pos < this->read_end && file.getChar(c) ){
         if(this->isDelimiter(c)){
+            std::cout << this->identify() << " es una orden? "<< order <<endl;
             this->tryToSend(order, pos);
             order = ""; 
         } else{
@@ -34,8 +37,10 @@ void Receptionist::run(){
         pos++;  
     }
     if( !order.empty() ){ //a  words cut
+        std::cout << this->identify() << " palabra cortada: "<< order <<endl;
         while(file.getChar(c)){ //read last order
             if(this->isDelimiter(c)){
+                std::cout << this->identify() << " palabra cortada es una orden? "<< order <<endl;
                 this->tryToSend(order, pos);
                 break;
             } else{
@@ -44,8 +49,6 @@ void Receptionist::run(){
         }
     }
     file.freeLock();
-    this->bread_channel->close_fifo(); //signal to stop loop for baker man
-    this->pizza_channel->close_fifo(); //signal to stop loop for pizza man
 }
 
 bool Receptionist::isDelimiter(char c){
@@ -59,9 +62,11 @@ void Receptionist::tryToSend(std::string str_order, int pos){
         Receptionist::Order order;
         order.id = pos; //set last read position as order id
         order.product = str_order;
+        std::cout <<this->identify() << " mandando orden" << order.toString() << endl;
         channel->escribir(&order, sizeof(Receptionist::Order));
+        std::cout <<this->identify() << " orden mandada" << order.toString() << endl;
         this->logger->log(this, order.toString());
-        std::cout << this->identify() << order.toString() << endl;
+
     }
 }
 
@@ -74,14 +79,17 @@ std::string Receptionist::toUpper(std::string str){
 
 void Receptionist::stop(){
     Employee::stop();
+    std::cout << this->identify() << " cerrando channels.." << endl;
+    this->bread_channel->close_fifo(); //signal to stop loop for baker man
+    this->pizza_channel->close_fifo(); //signal to stop loop for pizza man
 }
 
 std::string Receptionist::identify() const {
-     return "Receptionist "+std::to_string(this->id);
+     return "Receptionist "+ std::to_string(this->id);
 
 }
 Receptionist::~Receptionist(){
-    std::cout << "calling recepcionist detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
+    //std::cout << "calling recepcionist detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
     delete this->bread_channel;
     delete this->pizza_channel;
     delete this->logger;

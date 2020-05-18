@@ -7,6 +7,8 @@
 #include <fcntl.h>
 #include <string>
 #include <cstdio>
+#include <iostream>
+using namespace std;
 
 class Lock {
 
@@ -14,9 +16,10 @@ protected:
 	struct flock fl{};
 	int fd;
 	std::string nombre;
+    std::string cooker;
 
 public:
-	Lock ( const std::string nombre );
+	Lock ( const std::string nombre, const std::string cooker);
 
     ~Lock();
 

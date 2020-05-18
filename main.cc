@@ -4,7 +4,6 @@
 
 #include "Handlers/SIGINT_Handler.h"
 #include "Handlers/SignalHandler.h"
-#include "EndChildException.h"
 #include "Logger.h"
 #include "ArgsHelper.h"
 #include "Bakery.h"
@@ -25,12 +24,7 @@ int main(int argc, char** argv){
     SIGINT_Handler sigint_handler;
     SignalHandler::getInstance()->registrarHandler ( SIGINT,&sigint_handler, 0);
     while ( sigint_handler.getGracefulQuit() == 0 ) { //loop for handle SIGINT
-        try {
-            bakery.initWorkDay();
-		} catch (const EndChildException& child) {
-            exit(OK);
-            //return OK;
-        }
+        bakery.initWorkDay();
 		break;
 	}
     bakery.endWorkDay();

@@ -14,13 +14,13 @@ void Delivery::run(){
 
 
     CookerMan::Product product;
-	std::cout << "[Delivery]  a punto de leer por primera vez"  << std::endl;
+	//std::cout << "[Delivery]  a punto de leer por primera vez"  << std::endl;
 	size_t read_bytes = this->read_channel->leer(&product, sizeof(CookerMan::Product));
 	while(read_bytes > FIFO_EOF ){ // all cookers closed write channel
 
         this->logger->log(this, product.toString());
 
-        std::cout << "[Delivery] " << product.toString() << std::endl;
+        //std::cout << "[Delivery] " << product.toString() << std::endl;
         read_bytes = this->read_channel->leer(&product, sizeof(CookerMan::Product));
     } 
     if(read_bytes == ERROR){
@@ -28,7 +28,7 @@ void Delivery::run(){
     }
 	this->read_channel->close_fifo();
 	this->read_channel->eliminar();
-	std::cout << "[Delivery] loop ends " << std::endl;
+	//std::cout << "[Delivery] loop ends " << std::endl;
 }
 
 void Delivery::stop(){

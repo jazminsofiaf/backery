@@ -3,13 +3,18 @@
 Employee::Employee(int id_num): id(id_num){}
 
 void Employee::start(){
+    std::cout << "before fork " << std::strerror(errno) << endl;
     pid_t pid = fork ();
+    if(pid < OK){
+        std::cout << "fork error" << std::strerror(errno)   << endl;
+        exit(EXIT_FAILURE);
+    }
 	if ( pid == CHILD_PD ) {
+        std::cout << "before run " << std::strerror(errno) << endl;
         this->run();
-        throw EndChildException();
-        //exit(OK); //no detructor called
+        exit(OK); //no detructor called
 	}
-	std::cout << this-> identify() <<" pid: "<<pid << std::endl;
+	//std::cout << this-> identify() <<" pid: "<<pid << std::endl;
 	this->process_id = pid;
 }
 
@@ -24,7 +29,7 @@ void Employee::stop(){
             return;
         }
         else {
-            std::cerr << this-> identify() << " bad argument passed to waitpid" << std::endl;
+            std::cerr << this-> identify() << " bad argument passed to waitpid" << this->process_id<<std::endl;
             return;
         }
     }
@@ -40,5 +45,5 @@ void Employee::stop(){
 }
 
 Employee::~Employee() {
-    std::cout << "calling employee detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
+    //std::cout << "calling employee detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
 }

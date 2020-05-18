@@ -5,7 +5,6 @@ Bakery::Bakery(ArgsHelper::args * args ){
     this->delivery = new Delivery(DELIVERY_CHANNEL);
 
     for(int num = 1;  num <= args->pizzeros;  num = num + 1 ){
-        std::cerr << "[MAIN] creating baker man" << num << std::endl;
         Pizzamaker * a_pizza_maker = new Pizzamaker(num, DOUGH_CHANNEL, PIZZA_CHANNEL, DELIVERY_CHANNEL);
         this->allPizzaMaker.push_front(a_pizza_maker);
     }
@@ -30,7 +29,6 @@ void Bakery::initWorkDay(){
 
 	int num = 1;
     for(Pizzamaker * pizza_maker : this->allPizzaMaker){
-        std::cerr << "[MAIN] starting baker man" << num << std::endl;
         pizza_maker->start();
         num++;
     }
@@ -47,6 +45,11 @@ void Bakery::initWorkDay(){
 }
 
 void Bakery::endWorkDay(){
+    for(Receptionist * receptionist : this->allReceptionists){
+        receptionist->stop();
+    }
+    //all receptionist already finished
+
     for(Pizzamaker * pizza_maker : this->allPizzaMaker){ //wait until all cookers finished
         pizza_maker->stop();
     }
@@ -56,12 +59,6 @@ void Bakery::endWorkDay(){
 
     //all cookers already finished
 
-    for(Receptionist * receptionist : this->allReceptionists){
-        receptionist->stop();
-    }
-
-    //all receptionist already finished
-
     this->delivery->stop(); //wait until all cookers finish
     this->sourdough->stop();
 
@@ -69,7 +66,7 @@ void Bakery::endWorkDay(){
 }
 
 Bakery :: ~Bakery() {
-    std::cout << "calling Bakery detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
+    //std::cout << "calling Bakery detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
     delete this->sourdough;
     delete this->delivery;
     for(Pizzamaker * pizza_maker : this->allPizzaMaker){ //wait until all cookers finished

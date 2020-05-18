@@ -26,39 +26,40 @@ void CookerMan::run(){
 	Receptionist::Order order;
     CookerMan::Product product;
     
-    std::cout << this->identify() << " a punto de leer orden la primera vez " << std::strerror(errno) <<std::endl;
-	size_t read_bytes_order = orders_channel->leer(&order,sizeof(Receptionist::Order));
-    std::cout << this->identify() << " reading orders fifo: " << static_cast<int>(read_bytes_order) << std::strerror(errno) << std::endl;
-	while(static_cast<int>(read_bytes_order) > FIFO_EOF ){ // until receptionist  close other side
+    //std::cout << this->identify() << " a punto de leer orden la primera vez " << std::strerror(errno) <<std::endl;
+	size_t read_bytes_order = orders_channel->leer(&order, sizeof(Receptionist::Order), this->identify());
+    std::cout << this->identify() << " despues de leer la primera vez fifo: " << static_cast<int>(read_bytes_order) << std::strerror(errno) << std::endl;
+	while(read_bytes_order > FIFO_EOF ){ // until receptionist  close other side
 
         
         this->logger->log(this, order.toString());
-        std::cout << this->identify() << order.toString() << endl;
+        //std::cout << this->identify() << order.toString() << endl;
 
         Sourdough::Dough dough_piece;
-	    size_t read_bytes_dough = this->sourdough_channel->leer(&dough_piece, sizeof(Sourdough::Dough));
+	    size_t read_bytes_dough = this->sourdough_channel->leer(&dough_piece, sizeof(Sourdough::Dough), this->identify());
 
         if(read_bytes_dough == FIFO_EOF || read_bytes_dough == ERROR){
-            std::cout << this->identify() << " Error reading sourdough fifo: " << static_cast<int>(read_bytes_dough) << std::strerror(errno) << std::endl;
+            //std::cout << this->identify() << " Error reading sourdough fifo: " << static_cast<int>(read_bytes_dough) << std::strerror(errno) << std::endl;
             break; 
         } 
        
-        std::cout << this->identify() << " took dough pice " << dough_piece.toString() << std::endl;
+        //std::cout << this->identify() << " took dough pice " << dough_piece.toString() << std::endl;
         this->logger->log(this, " took dough pice " + dough_piece.toString());
 
         product.order = order;
         product.dough = dough_piece;
         product.made_by = this->identify();
-        std::cout << "por escribir "<< product.toString()<<endl;
-        std::cout << "escribiendo "<< this->delivery_channel->escribir(&product, sizeof(CookerMan::Product)) << endl;
+        //std::cout << "por escribir "<< product.toString()<<endl;
+        this->delivery_channel->escribir(&product, sizeof(CookerMan::Product));
+        //std::cout << "escribiendo "<<  << endl;
             
-        std::cout << this->identify() << " a punto de leer orden" <<std::endl;
-        read_bytes_order = orders_channel->leer(&order,sizeof(Receptionist::Order));
+        //std::cout << this->identify() << " a punto de leer orden" <<std::endl;
+        read_bytes_order = orders_channel->leer(&order,sizeof(Receptionist::Order), this->identify());
     } 
     if(read_bytes_order == ERROR){
         std::cout << this->identify() << " Error reading orders fifo: " << std::strerror(errno) << std::endl;      
     } 
-    std::cout << this->identify() << " loop ends " << std::endl;
+    //std::cout << this->identify() << " loop ends " << std::endl;
 
     this->delivery_channel->close_fifo(); //signal to end delivery loop
     this->sourdough_channel->close_fifo();

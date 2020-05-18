@@ -8,13 +8,13 @@ Fifo::Fifo(const std::string nombre) : nombre(nombre), fd(-1) {
 }
 
 Fifo::~Fifo() {
-    std::cout << "calling fifo detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
+    //std::cout << "calling fifo detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
 }
 
 int Fifo::close_fifo() {
 	int rv = close( this->fd );
 	if(rv != 0){
-		std::cerr << "Error closing fifo " << this->nombre << ": "<<std::strerror(errno) << std::endl;
+		std::cerr << "Error closing fifo " << this->nombre << ": "<<std::strerror(errno) << this->fd<<std::endl;
 	}
 	this->fd = -1;
 	return rv;

@@ -1,3 +1,4 @@
+#include <iostream>
 #include "LockFile.h"
 
 LockFile :: LockFile (const std::string name, int type, int start, int end, std::string mode) {
@@ -6,8 +7,10 @@ LockFile :: LockFile (const std::string name, int type, int start, int end, std:
     this->fl.l_whence = SEEK_SET;
     this->fl.l_start = start;
     this->fl.l_len = end - start;
+    std::cout << "before open shared file lock" << mode << std::endl;
     this->file = fopen(this->name.c_str(), mode.c_str());
     this->fd = fileno(this->file);
+    std::cout << "fileno" << std::endl;
 }
 
 int LockFile:: getLock () {

@@ -12,25 +12,25 @@ void Sourdough::run(){
 	SignalHandler::getInstance()->registrarHandler(SIGUSR1, &sigusr_handler,0);
 
 	
-	std::cout << "[Sourdough] por abrir fifo" << std::endl;
+	//std::cout << "[Sourdough] por abrir fifo" << std::endl;
     this->write_channel->abrir(); //other side already open
-    std::cout << "[Sourdough] despues de abrir fifo" << sigusr_handler.getGracefulQuit() << std::endl;
+    //std::cout << "[Sourdough] despues de abrir fifo" << sigusr_handler.getGracefulQuit() << std::endl;
 	while( sigusr_handler.getGracefulQuit() == 0 ) {
-			std::cout << "[Sourdough] looping " << sigusr_handler.getGracefulQuit() << std::endl;
+			//std::cout << "[Sourdough] looping " << sigusr_handler.getGracefulQuit() << std::endl;
             sleep(1);
             Sourdough::Dough dough;
             dough.num = 1 + num++;
             this->write_channel->escribir(&dough, sizeof(Sourdough::Dough));
             
 	}
-	std::cout << "[Sourdough] loop ends " << sigusr_handler.getGracefulQuit() << std::endl;
+	//std::cout << "[Sourdough] loop ends " << sigusr_handler.getGracefulQuit() << std::endl;
 	this->write_channel->close_fifo();
 	this->write_channel->eliminar();
 	
 }
 
 void Sourdough::stop(){
-    std::cout << "[Sourdough] stoping..." <<this->process_id << std::endl;
+    //std::cout << "[Sourdough] stoping..." <<this->process_id << std::endl;
 	kill(this->process_id, SIGUSR1);
 	Employee::stop();
 
@@ -38,6 +38,6 @@ void Sourdough::stop(){
 }
 
 Sourdough :: ~Sourdough() {
-    std::cout << "calling sourfough detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
+    //std::cout << "calling sourfough detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
     delete this->write_channel;
 }
