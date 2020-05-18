@@ -1,5 +1,5 @@
 #include "Sourdough.h"
-Sourdough::Sourdough(Logger * logger, std::string channel_name): Employee(0), channel_name(channel_name), num(0), logger(logger){}
+Sourdough::Sourdough(std::string channel_name): Employee(0), channel_name(channel_name), num(0) {}
 
 std::string Sourdough::identify() const {
     return "Sourdough";
@@ -8,6 +8,7 @@ std::string Sourdough::identify() const {
 void Sourdough::run(){
     SIGUSR_Handler sigusr_handler;
 	SignalHandler::getInstance()->registrarHandler(SIGUSR1, &sigusr_handler,0);
+
 	
 	std::cout << "[Sourdough] por abrir fifo" << std::endl;
 	this->write_channel = new FifoEscritura(this->channel_name);
@@ -19,7 +20,7 @@ void Sourdough::run(){
             Sourdough::Dough dough;
             dough.num = 1 + num++;
             this->write_channel->escribir(&dough, sizeof(Sourdough::Dough));
-            this->logger->log(this, dough.toString() );
+            
 	}
 	std::cout << "[Sourdough] loop ends " << sigusr_handler.getGracefulQuit() << std::endl;
 	this->write_channel->close_fifo();

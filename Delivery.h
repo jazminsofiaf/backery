@@ -11,13 +11,12 @@
 using namespace std;
 class Delivery: public Employee{
     private:
-        Logger * logger;
         std::string channel_name;
         FifoLectura * read_channel;
         
     public:
         //constructor
-        Delivery( Logger * logger, std::string channel_name);
+        Delivery( std::string channel_name);
         //~Delivery();
         void run() override;
         void stop() override;

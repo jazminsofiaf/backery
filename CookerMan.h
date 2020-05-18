@@ -14,7 +14,6 @@ using namespace std;
 
 class CookerMan : public Employee{
     protected:
-        Logger * logger;
         std::string sourdough_channel_name;
         std::string orders_channel_name;
         std::string delivery_channel_name;
@@ -25,7 +24,7 @@ class CookerMan : public Employee{
         
     public:
         //constructor
-        CookerMan(int id_num, Logger * logger,  std::string sourdough_channel_name, 
+        CookerMan(int id_num,  std::string sourdough_channel_name, 
                                 std::string orders_channel_name, 
                                 std::string delivery_channel_name);
         void run() override;

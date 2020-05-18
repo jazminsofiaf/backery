@@ -30,7 +30,7 @@ class Bakery{
         //constructor
         Bakery();
        // ~Bakery();
-        void initWorkDay(ArgsHelper::args * args, Logger * logger);
+        void initWorkDay(ArgsHelper::args * args);
         void endWorkDay();
 
 };

@@ -146,6 +146,18 @@
 		<Unit filename="/Users/Jazmina/Documents/FIUBA/concurrentes/practica/panaderia/Handlers/SignalHandler.h">
 			<Option target="bakery"/>
 		</Unit>
+		<Unit filename="/Users/Jazmina/Documents/FIUBA/concurrentes/practica/panaderia/Lock.cpp">
+			<Option target="bakery"/>
+		</Unit>
+		<Unit filename="/Users/Jazmina/Documents/FIUBA/concurrentes/practica/panaderia/Lock.h">
+			<Option target="bakery"/>
+		</Unit>
+		<Unit filename="/Users/Jazmina/Documents/FIUBA/concurrentes/practica/panaderia/LockFile.cpp">
+			<Option target="bakery"/>
+		</Unit>
+		<Unit filename="/Users/Jazmina/Documents/FIUBA/concurrentes/practica/panaderia/LockFile.h">
+			<Option target="bakery"/>
+		</Unit>
 		<Unit filename="/Users/Jazmina/Documents/FIUBA/concurrentes/practica/panaderia/Logger.cpp">
 			<Option target="bakery"/>
 		</Unit>

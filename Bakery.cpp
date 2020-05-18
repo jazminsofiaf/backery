@@ -3,21 +3,21 @@
 Bakery::Bakery(){} 
 
 
-void Bakery::initWorkDay( ArgsHelper::args * args, Logger * logger){
-	this->sourdough = new Sourdough(logger, DOUGH_CHANNEL);
+void Bakery::initWorkDay( ArgsHelper::args * args){
+	this->sourdough = new Sourdough(DOUGH_CHANNEL);
 	this->sourdough->start();
-	this->delivery = new Delivery(logger, DELIVERY_CHANNEL);
+	this->delivery = new Delivery(DELIVERY_CHANNEL);
 	this->delivery->start();
 
 	
 	for(int num = 1;  num <= args->pizzeros ; num=num+1){
-			Pizzamaker pizza_maker(num, logger, DOUGH_CHANNEL, PIZZA_CHANNEL, DELIVERY_CHANNEL);
+			Pizzamaker pizza_maker(num, DOUGH_CHANNEL, PIZZA_CHANNEL, DELIVERY_CHANNEL);
 			pizza_maker.start();
 			this->allPizzaMaker.push_front(pizza_maker);
 	}
 
 	for(int num = 1;  num <= args->panaderos ; num=num+1){
-			Baker baker(num, logger,DOUGH_CHANNEL, BREAD_CHANNEL, DELIVERY_CHANNEL);
+			Baker baker(num, DOUGH_CHANNEL, BREAD_CHANNEL, DELIVERY_CHANNEL);
 			baker.start();
 			this->allBakers.push_front(baker);
 	}
@@ -25,7 +25,7 @@ void Bakery::initWorkDay( ArgsHelper::args * args, Logger * logger){
 	
 	int bytes_by_delivery_recepcionist = ( args->file_size + args->delivery - 1 )/ args->delivery;
 	for(int start =0, num = 1 ; start < args->file_size && num <= args->delivery ; start = start + bytes_by_delivery_recepcionist, num=num+1){
-			Recepcionist recepcionist(num, logger, BREAD_CHANNEL ,PIZZA_CHANNEL , start, start + bytes_by_delivery_recepcionist, args->pedido);
+			Recepcionist recepcionist(num, BREAD_CHANNEL ,PIZZA_CHANNEL , start, start + bytes_by_delivery_recepcionist, args->pedido);
 			recepcionist.start();
 			this->allRecepcionists.push_front(recepcionist);
 	}

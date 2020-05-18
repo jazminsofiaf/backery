@@ -15,6 +15,8 @@ ArgsHelper::args * ArgsHelper::parse(int argc, char** argv){
         throw std::runtime_error("Error: Invalid Arguments");
     }
 
+    remove(Logger::FILENAME.c_str());
+
     ArgsHelper::args * args = new ArgsHelper::args();
     args->pizzeros = ArgsHelper::get(argc, argv, ArgsHelper::PIZZEROS);
     args->panaderos = ArgsHelper::get(argc, argv, ArgsHelper::PANADEROS);

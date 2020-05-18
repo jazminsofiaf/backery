@@ -1,10 +1,9 @@
 
 #include "Recepcionist.h"
 Recepcionist::Recepcionist(int id_num, 
-                            Logger * logger, 
                             std::string bread_name, std::string pizza_name,
                             int start, int end, std::string file_name)
-                            : Employee(id_num), logger(logger), 
+                            : Employee(id_num), 
                             bread_channel_name(bread_name), pizza_channel_name(pizza_name),
                             read_start(start), read_end(end), orders_file(file_name){
                         
@@ -15,6 +14,8 @@ Recepcionist::Recepcionist(int id_num,
 }
 
 void Recepcionist::run(){
+   
+	
     //other side already open
     this->bread_channel->abrir();
     this->pizza_channel->abrir(); 
@@ -37,7 +38,6 @@ void Recepcionist::run(){
         return; //no words cut
     }
     while(file.getChar(c)){ //read last order
-        putchar(c);
         if(this->isDelimiter(c)){  
             this->tryToSend(order, pos);
             break;
@@ -64,7 +64,8 @@ void Recepcionist::tryToSend(std::string str_order, int pos){
         order.id = pos; //set last read position as order id
         order.product = str_order;
         channel->escribir(&order, sizeof(Recepcionist::Order));
-        this->logger->log(this, order.toString());
+        Logger logger;
+        logger.log(this, order.toString());
         std::cout << this->identify() << order.toString() << endl;
     }
 }

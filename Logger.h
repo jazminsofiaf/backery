@@ -26,7 +26,7 @@ private:
     FifoEscritura * write_channel;
     FifoLectura * read_channel;
 
-    static const std::string FILENAME;
+    
     std::fstream * outputFile;
     pid_t process_id;
     void writeToFile();
@@ -34,6 +34,7 @@ private:
     Lock * lock;
 
 public:
+    static const std::string FILENAME;
 
     Logger();
 

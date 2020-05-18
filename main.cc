@@ -16,7 +16,6 @@ using namespace std;
 int main(int argc, char** argv){
 	SIGINT_Handler sigint_handler;
 	SignalHandler::getInstance()->registrarHandler ( SIGINT,&sigint_handler, 0);
-	Logger * logger = NULL;
 	Bakery bakery;
 	while ( sigint_handler.getGracefulQuit() == 0 ) { //loop for handle SIGINT
 		ArgsHelper::args * args;
@@ -26,8 +25,7 @@ int main(int argc, char** argv){
 			return ERROR;
 		}
 		try{
-			logger = new Logger();
-			bakery.initWorkDay(args, logger);
+			bakery.initWorkDay(args);
 		} catch (const EndChildException& e){
 	
 			return OK;
@@ -36,7 +34,6 @@ int main(int argc, char** argv){
 	
 	}
 	bakery.endWorkDay();
-	logger->destruir();
 	SignalHandler::destruir();
 	return OK;
 }

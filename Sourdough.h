@@ -5,7 +5,6 @@
 #include "Handlers/SIGUSR_Handler.h"
 #include "Handlers/SignalHandler.h"
 #include "Fifos/FifoEscritura.h"
-#include "Logger.h"
 #include "Employee.h"
 
 
@@ -15,11 +14,10 @@ class Sourdough: public Employee{
         std::string channel_name;
         FifoEscritura * write_channel;
         int num;
-        Logger * logger;
-        
+
     public:
         //constructor
-        Sourdough(Logger * logger, std::string channel_name);
+        Sourdough(std::string channel_name);
        // ~Sourdough();
         void run() override;
         void stop() override;
