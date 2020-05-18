@@ -6,7 +6,6 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include "Constant.h"
-#include "EndChildException.h"
 
 using namespace std;
 
@@ -14,14 +13,16 @@ class Employee{
     protected:
         int id;
         pid_t process_id;
+
         
     public:
         //constructor
         Employee(int id);
-
-        void start();
+        void getReady();
+        virtual void init() = 0;
         virtual void run() = 0;
-        virtual void stop();
+        void start();
+        virtual void waitMe();
         virtual std::string identify() const = 0;  
         virtual ~Employee();
 };

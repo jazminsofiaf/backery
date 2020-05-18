@@ -1,19 +1,23 @@
 #include "Sourdough.h"
 Sourdough::Sourdough(std::string channel_name): Employee(0), channel_name(channel_name), num(0) {
     this->write_channel = new FifoEscritura(this->channel_name);
+    std::cout << "[Sourdough ]" << std::strerror(errno) << std::endl;
 }
 
 std::string Sourdough::identify() const {
     return "Sourdough";
 }
 
+void Sourdough::init() {
+    std::cout << "[Sourdough] por abrir fifo" << std::endl;
+    this->write_channel->abrir(); //other side already open
+}
+
 void Sourdough::run(){
+    std::cout << "[Sourdough]" << std::strerror(errno) << std::endl;
     SIGUSR_Handler sigusr_handler;
 	SignalHandler::getInstance()->registrarHandler(SIGUSR1, &sigusr_handler,0);
 
-	
-	std::cout << "[Sourdough] por abrir fifo" << std::endl;
-    this->write_channel->abrir(); //other side already open
     std::cout << "[Sourdough] despues de abrir fifo" << sigusr_handler.getGracefulQuit() << std::endl;
 	while( sigusr_handler.getGracefulQuit() == 0 ) {
 			std::cout << "[Sourdough] looping " << sigusr_handler.getGracefulQuit() << std::endl;
@@ -29,12 +33,10 @@ void Sourdough::run(){
 	
 }
 
-void Sourdough::stop(){
+void Sourdough::waitMe(){
     std::cout << "[Sourdough] stoping..." <<this->process_id << std::endl;
 	kill(this->process_id, SIGUSR1);
-	Employee::stop();
-
-
+	Employee::waitMe();
 }
 
 Sourdough :: ~Sourdough() {

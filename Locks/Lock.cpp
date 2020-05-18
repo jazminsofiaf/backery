@@ -17,4 +17,3 @@ Lock :: ~Lock () {
     close ( this->fd );
     remove(this->nombre.c_str());
 }
- 

@@ -2,19 +2,29 @@
 
 Employee::Employee(int id_num): id(id_num){}
 
+void Employee::getReady(){
+    pid_t pid = fork ();
+    if ( pid == CHILD_PD ) {
+        this->init();
+        exit(OK); //no detructor called
+    }
+    std::cout << this-> identify() <<" init id: "<<pid << std::endl;
+    this->process_id = pid;
+}
+
 void Employee::start(){
+    //Employee::waitMe();
     pid_t pid = fork ();
 	if ( pid == CHILD_PD ) {
         this->run();
-        throw EndChildException();
-        //exit(OK); //no detructor called
+        exit(OK); //no detructor called
 	}
 	std::cout << this-> identify() <<" pid: "<<pid << std::endl;
 	this->process_id = pid;
 }
 
 
-void Employee::stop(){
+void Employee::waitMe(){
     int status;
     pid_t rc_pid = waitpid(this->process_id, &status, 0);
     if (rc_pid < 0) {
@@ -24,7 +34,7 @@ void Employee::stop(){
             return;
         }
         else {
-            std::cerr << this-> identify() << " bad argument passed to waitpid" << std::endl;
+            std::cerr << this-> identify() << " bad argument passed to waitpid" << this->process_id <<std::endl;
             return;
         }
     }

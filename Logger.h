@@ -11,7 +11,6 @@
 #include "Employee.h"
 #include "Fifos/FifoLectura.h"
 #include "Fifos/FifoEscritura.h"
-#include "EndChildException.h"
 #include "Locks/ExclusiveFile.h"
 
 #define LOGGER_FIFO "logger_fifo" 

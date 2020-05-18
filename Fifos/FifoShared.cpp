@@ -3,7 +3,6 @@
 FifoShared::FifoShared(const std::string nombre) : FifoLectura(nombre) {}
 
 FifoShared::~FifoShared() {
-    //std::cout << "calling fifo shared detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
 }
 
 ssize_t FifoShared::leer(void* buffer,const ssize_t buffsize) const {

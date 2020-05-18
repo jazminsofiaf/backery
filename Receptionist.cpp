@@ -12,14 +12,19 @@ Receptionist::Receptionist(int id_num,
     this->channel_map[BREAD] = this->bread_channel;
     this->channel_map[PIZZA] = this->pizza_channel;
     this->logger = new Logger();
+    std::cout << "[RECEPCIONISTA]" << std::strerror(errno) << std::endl;
+}
+
+void Receptionist::init(){
+    std::cout << "[RECEPCIONISTA]" << std::strerror(errno) << std::endl;
+    this->bread_channel->abrir();//block until at least one cooker man open read side
+    this->pizza_channel->abrir(); //block until at least one cooker man open read side
 }
 
 void Receptionist::run(){
 
-    this->bread_channel->abrir();//block until at least one cooker man open read side
-    this->pizza_channel->abrir(); //block until at least one cooker man open read side
-
     SharedFile file(this->orders_file, this->read_start, this->read_end);
+
     file.getSharedLock();
     int pos = this->read_start;
     std::string order = "";
@@ -72,8 +77,8 @@ std::string Receptionist::toUpper(std::string str){
     return str;
 }
 
-void Receptionist::stop(){
-    Employee::stop();
+void Receptionist::waitMe(){
+    Employee::waitMe();
 }
 
 std::string Receptionist::identify() const {

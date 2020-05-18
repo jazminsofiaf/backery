@@ -8,11 +8,11 @@ std::string Delivery::identify() const {
     return "Delivery";
 }
 
+void Delivery::init() {
+    this->read_channel->abrir(); //blocking until cooker opens for write
+}
+
 void Delivery::run(){
-
-	this->read_channel->abrir(); //blocking until cooker opens for write
-
-
     CookerMan::Product product;
 	std::cout << "[Delivery]  a punto de leer por primera vez"  << std::endl;
 	size_t read_bytes = this->read_channel->leer(&product, sizeof(CookerMan::Product));
@@ -31,8 +31,8 @@ void Delivery::run(){
 	std::cout << "[Delivery] loop ends " << std::endl;
 }
 
-void Delivery::stop(){
-	Employee::stop();
+void Delivery::waitMe(){
+	Employee::waitMe();
 	
 }
 

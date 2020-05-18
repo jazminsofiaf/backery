@@ -14,16 +14,19 @@ CookerMan::CookerMan(int id_num,
     this->sourdough_channel = new FifoShared(this->sourdough_channel_name);
     this->delivery_channel = new FifoEscritura(this->delivery_channel_name);
     this->logger = new Logger();
+    std::cout << "[Cookerman]" << std::strerror(errno) << std::endl;
+}
+
+void CookerMan::init() {
+    std::cout << "["+this->identify()+"]" << std::strerror(errno) << std::endl;
+    this->orders_channel->abrir(); //blocked until receptionist open for write
+    this->sourdough_channel->abrir(); //blocked until sourdough open for write
+    this->delivery_channel->abrir(); //blocked until delivery open for read
 }
 
 void CookerMan::run(){
-
-    this->orders_channel->abrir(); //blocked until receptionist opem for write
-	this->sourdough_channel->abrir(); //blocked until sourdough opem for write
-	this->delivery_channel->abrir(); //blocked until delivery opem for read
-
-
 	Receptionist::Order order;
+    Sourdough::Dough dough_piece;
     CookerMan::Product product;
     
     std::cout << this->identify() << " a punto de leer orden la primera vez " << std::strerror(errno) <<std::endl;
@@ -35,7 +38,7 @@ void CookerMan::run(){
         this->logger->log(this, order.toString());
         std::cout << this->identify() << order.toString() << endl;
 
-        Sourdough::Dough dough_piece;
+
 	    size_t read_bytes_dough = this->sourdough_channel->leer(&dough_piece, sizeof(Sourdough::Dough));
 
         if(read_bytes_dough == FIFO_EOF || read_bytes_dough == ERROR){
@@ -68,8 +71,8 @@ void CookerMan::run(){
 }
 
 
-void CookerMan::stop(){
-    Employee::stop();
+void CookerMan::waitMe(){
+    Employee::waitMe();
 }
 
 

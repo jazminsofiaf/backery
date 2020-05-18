@@ -41,8 +41,9 @@ class Receptionist : public Employee {
                      std::string bread_name, std::string pizza_name,
                      int start, int end, std::string file_name);
         ~Receptionist();
+        void init() override;
         void run() override;
-        void stop() override;
+        void waitMe() override;
         std::string identify() const override; 
 
         struct Order {

@@ -9,7 +9,7 @@
 
 
 using namespace std;
-class Sourdough: public Employee{
+class Sourdough: public Employee {
     private:
         std::string channel_name;
         FifoEscritura * write_channel;
@@ -19,8 +19,9 @@ class Sourdough: public Employee{
         //constructor
         Sourdough(std::string channel_name);
         ~Sourdough();
+        void init() override;
         void run() override;
-        void stop() override;
+        void waitMe() override;
         std::string identify() const override; 
 
         struct Dough{

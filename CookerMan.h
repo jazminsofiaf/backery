@@ -12,7 +12,7 @@
 using namespace std;
 
 
-class CookerMan : public Employee{
+class CookerMan : public Employee {
     protected:
         std::string sourdough_channel_name;
         std::string orders_channel_name;
@@ -29,7 +29,8 @@ class CookerMan : public Employee{
                                 std::string orders_channel_name, 
                                 std::string delivery_channel_name);
         void run() override;
-        void stop() override;
+        void init() override;
+        void waitMe() override;
         ~CookerMan();
 
         struct Product{
