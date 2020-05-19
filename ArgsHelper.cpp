@@ -22,7 +22,8 @@ ArgsHelper::args * ArgsHelper::parse(int argc, char** argv){
     args->panaderos = ArgsHelper::get(argc, argv, ArgsHelper::PANADEROS);
     args->delivery = ArgsHelper::get(argc, argv, ArgsHelper::DELIVERY);
     if(args->pizzeros < 1 || args->panaderos < 1|| args->delivery < 1){
-        throw std::runtime_error("Error: more than one employee is needed for each type");
+        std::cerr <<"Error: more than one employee is needed for each type"<< endl;
+        throw std::runtime_error("Error: Invalid Arguments");
     }
     args->pedido = ArgsHelper::getOrdersFile(argc, argv);
     args->file_size = ArgsHelper::getFileSize(args->pedido);
