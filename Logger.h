@@ -13,8 +13,6 @@
 #include "Fifos/FifoEscritura.h"
 #include "Locks/ExclusiveFile.h"
 
-#define LOGGER_FIFO "logger_fifo" 
-
 
 using namespace std;
 class Logger {

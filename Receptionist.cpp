@@ -1,5 +1,7 @@
 
 #include "Receptionist.h"
+#include "Handlers/SIGINT_Handler.h"
+
 Receptionist::Receptionist(int id_num,
                            FifoEscritura * bread_channel,
                            FifoEscritura * pizza_channel,
@@ -14,6 +16,8 @@ Receptionist::Receptionist(int id_num,
 }
 
 void Receptionist::run(){
+    SIGINT_Handler sigint_handler;
+    SignalHandler::getInstance()->registrarHandler ( SIGINT,&sigint_handler, 0);
 
     SharedFile file(this->orders_file, this->read_start, this->read_end);
     std::cout << this->identify() << " shared lock from "<< this->read_start <<" to "<< this->read_end << endl;
@@ -21,7 +25,7 @@ void Receptionist::run(){
     int pos = this->read_start;
     std::string order = "";
     char c;
-    while (pos < this->read_end && file.getChar(c) ){
+    while (pos < this->read_end && file.getChar(c) && sigint_handler.getGracefulQuit() == 0 ){
         if(this->isDelimiter(c)){
             std::cout << this->identify() << " es una orden? "<< order <<endl;
             this->tryToSend(order, pos);
@@ -44,6 +48,8 @@ void Receptionist::run(){
         }
     }
     file.freeLock();
+    SignalHandler::destruir();
+
 }
 
 bool Receptionist::isDelimiter(char c){
@@ -58,7 +64,13 @@ void Receptionist::tryToSend(std::string str_order, int pos){
         order.id = pos; //set last read position as order id
         order.product = str_order;
         std::cout <<this->identify() << " mandando orden" << order.toString() << endl;
-        channel->escribir(&order, sizeof(Receptionist::Order));
+        size_t sent = channel->escribir(&order, sizeof(Receptionist::Order));
+        sleep(1);
+        if ( sent > 0){
+            std::cout <<this->identify() << " mandando orden " <<sent << order.toString() << endl;
+        }else{
+            std::cout <<this->identify() << "No se mando " <<sent << endl;
+        }
         std::cout <<this->identify() << " orden mandada" << order.toString() << endl;
         this->logger->log(this, order.toString());
 

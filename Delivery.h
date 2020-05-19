@@ -3,6 +3,7 @@
 
 #include "Constant.h"
 #include "Fifos/FifoLectura.h"
+#include "Handlers/SIGINT_Handler.h"
 #include "Logger.h"
 #include "CookerMan.h"
 #include "Employee.h"

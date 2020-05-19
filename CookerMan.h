@@ -2,13 +2,15 @@
 #define COOKERMAN_H_
 
 #include "Constant.h"
+#include "Handlers/SIGINT_Handler.h"
 #include "Fifos/FifoEscritura.h"
 #include "Fifos/FifoLectura.h"
 #include "Fifos/FifoShared.h"
 #include "Logger.h"
 #include "Receptionist.h"
 #include "Sourdough.h"
-#include "Employee.h"   
+#include "Employee.h"
+
 using namespace std;
 
 

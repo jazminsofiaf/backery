@@ -1,4 +1,6 @@
 #include "Delivery.h"
+
+
 Delivery::Delivery(std::string channel_name): Employee(0), channel_name(channel_name){
     this->read_channel = new FifoLectura(this->channel_name);
     this->logger = new Logger();
@@ -9,6 +11,8 @@ std::string Delivery::identify() const {
 }
 
 void Delivery::run(){
+    SIGINT_Handler sigint_handler;
+    SignalHandler::getInstance()->registrarHandler ( SIGINT,&sigint_handler, 0);
 
 	this->read_channel->abrir(); //blocking until cooker opens for write
 
@@ -16,7 +20,7 @@ void Delivery::run(){
     CookerMan::Product product;
 	//std::cout << "[Delivery]  a punto de leer por primera vez"  << std::endl;
 	size_t read_bytes = this->read_channel->leer(&product, sizeof(CookerMan::Product));
-	while(read_bytes > FIFO_EOF ){ // all cookers closed write channel
+	while(read_bytes > FIFO_EOF && sigint_handler.getGracefulQuit() == 0 ){ // all cookers closed write channel
 
         this->logger->log(this, product.toString());
 
@@ -24,11 +28,12 @@ void Delivery::run(){
         read_bytes = this->read_channel->leer(&product, sizeof(CookerMan::Product));
     } 
     if(read_bytes == ERROR){
-        throw std::runtime_error("Error reading orders fifo");     
+        std::cerr << this->identify() <<" delivery channel closed" << std::endl;
     }
 	this->read_channel->close_fifo();
 	this->read_channel->eliminar();
 	//std::cout << "[Delivery] loop ends " << std::endl;
+    SignalHandler::destruir();
 }
 
 void Delivery::waitMe(){

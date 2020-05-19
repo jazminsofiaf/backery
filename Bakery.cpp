@@ -38,11 +38,8 @@ void Bakery::initWorkDay(){
         baker->start();
     }
 
-    std::cout <<  " abriendo channels.." <<  std::strerror(errno) << endl;
     this->bread_channel->abrir();//block until at least one cooker man open read side
-    std::cout << " bread channel abierto .." <<  std::strerror(errno) << endl;
     this->pizza_channel->abrir(); //block until at least one cooker man open read side
-    std::cout << " pizza channel abierto .." <<  std::strerror(errno) << endl;
 
     for(Receptionist * receptionist : this->allReceptionists){
         receptionist->start();
@@ -54,8 +51,9 @@ void Bakery::endWorkDay(){
     for(Receptionist * receptionist : this->allReceptionists){
         receptionist->waitMe();
     }
-    this->bread_channel->close_fifo(); //signal to stop loop for baker man
-    this->pizza_channel->close_fifo(); //signal to stop loop for pizza man
+    this->bread_channel->close_fifo(); //not used anymore
+    this->pizza_channel->close_fifo(); //not used anymore
+
     //all receptionist already finished
 
     for(Pizzamaker * pizza_maker : this->allPizzaMaker){ //wait until all cookers finished
@@ -69,6 +67,7 @@ void Bakery::endWorkDay(){
     this->delivery->waitMe(); //wait until all cookers finish
     this->sourdough->waitMe();
 
+    std::cout << "todo cerro bien"  << std::endl;
 
 }
 

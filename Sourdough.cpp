@@ -26,15 +26,13 @@ void Sourdough::run(){
 	//std::cout << "[Sourdough] loop ends " << sigusr_handler.getGracefulQuit() << std::endl;
 	this->write_channel->close_fifo();
 	this->write_channel->eliminar();
-	
+    SignalHandler::destruir();
 }
 
 void Sourdough::waitMe(){
     //std::cout << "[Sourdough] stoping..." <<this->process_id << std::endl;
 	kill(this->process_id, SIGUSR1);
 	Employee::waitMe();
-
-
 }
 
 Sourdough :: ~Sourdough() {

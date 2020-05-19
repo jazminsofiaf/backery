@@ -1,6 +1,7 @@
 #include "CookerMan.h"
 
 
+
 CookerMan::CookerMan(int id_num,
                                     std::string sourdough_channel_name, 
                                     std::string orders_channel_name, 
@@ -17,6 +18,8 @@ CookerMan::CookerMan(int id_num,
 }
 
 void CookerMan::run(){
+    SIGINT_Handler sigint_handler;
+    SignalHandler::getInstance()->registrarHandler ( SIGINT,&sigint_handler, 0);
 
     this->orders_channel->abrir(); //blocked until receptionist open for write
 	this->sourdough_channel->abrir(); //blocked until sourdough open for write
@@ -29,7 +32,7 @@ void CookerMan::run(){
     //std::cout << this->identify() << " a punto de leer orden la primera vez " << std::strerror(errno) <<std::endl;
 	size_t read_bytes_order = orders_channel->leer(&order, sizeof(Receptionist::Order), this->identify());
     std::cout << this->identify() << " despues de leer la primera vez fifo: "<<this->orders_channel_name << static_cast<int>(read_bytes_order) << std::strerror(errno) << std::endl;
-	while(read_bytes_order > FIFO_EOF ){ // until receptionist  close other side
+	while(read_bytes_order > FIFO_EOF && sigint_handler.getGracefulQuit() == 0){ // until receptionist  close other side
 
         
         this->logger->log(this, order.toString());
@@ -66,6 +69,7 @@ void CookerMan::run(){
     this->orders_channel->close_fifo();
     this->orders_channel->eliminar();
     std::cout << this->identify() << " channels closed " << std::endl;
+    SignalHandler::destruir();
 }
 
 
