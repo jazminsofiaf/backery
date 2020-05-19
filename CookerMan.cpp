@@ -18,9 +18,9 @@ CookerMan::CookerMan(int id_num,
 
 void CookerMan::run(){
 
-    this->orders_channel->abrir(); //blocked until receptionist opem for write
-	this->sourdough_channel->abrir(); //blocked until sourdough opem for write
-	this->delivery_channel->abrir(); //blocked until delivery opem for read
+    this->orders_channel->abrir(); //blocked until receptionist open for write
+	this->sourdough_channel->abrir(); //blocked until sourdough open for write
+	this->delivery_channel->abrir(); //blocked until delivery open for read
 
 
 	Receptionist::Order order;
@@ -28,7 +28,7 @@ void CookerMan::run(){
     
     //std::cout << this->identify() << " a punto de leer orden la primera vez " << std::strerror(errno) <<std::endl;
 	size_t read_bytes_order = orders_channel->leer(&order, sizeof(Receptionist::Order), this->identify());
-    std::cout << this->identify() << " despues de leer la primera vez fifo: " << static_cast<int>(read_bytes_order) << std::strerror(errno) << std::endl;
+    std::cout << this->identify() << " despues de leer la primera vez fifo: "<<this->orders_channel_name << static_cast<int>(read_bytes_order) << std::strerror(errno) << std::endl;
 	while(read_bytes_order > FIFO_EOF ){ // until receptionist  close other side
 
         
@@ -60,12 +60,12 @@ void CookerMan::run(){
         std::cout << this->identify() << " Error reading orders fifo: " << std::strerror(errno) << std::endl;      
     } 
     //std::cout << this->identify() << " loop ends " << std::endl;
-
+    std::cout << this->identify() << " loop ends FIN " << std::endl;
     this->delivery_channel->close_fifo(); //signal to end delivery loop
     this->sourdough_channel->close_fifo();
     this->orders_channel->close_fifo();
     this->orders_channel->eliminar();
-    std::cout << this->identify() << " loop ends FIN " << std::endl;
+    std::cout << this->identify() << " channels closed " << std::endl;
 }
 
 

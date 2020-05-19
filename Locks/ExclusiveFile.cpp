@@ -1,7 +1,6 @@
 #include "ExclusiveFile.h"
 
-ExclusiveFile :: ExclusiveFile ( const std::string name)
-    : LockFile(name, 0, 0, F_WRLCK, std::string("w")){
+ExclusiveFile :: ExclusiveFile ( const std::string name) : LockFile(name, 0, 0, F_WRLCK, std::string("w")){
 }
 
 

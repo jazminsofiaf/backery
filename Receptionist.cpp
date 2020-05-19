@@ -18,7 +18,9 @@ void Receptionist::run(){
 
     std::cout << this->identify() << " abriendo channels.." <<  std::strerror(errno) << endl;
     this->bread_channel->abrir();//block until at least one cooker man open read side
+    std::cout << this->identify() << " bread channel abierto .." <<  std::strerror(errno) << endl;
     this->pizza_channel->abrir(); //block until at least one cooker man open read side
+    std::cout << this->identify() << " pizza channel abierto .." <<  std::strerror(errno) << endl;
 
     SharedFile file(this->orders_file, this->read_start, this->read_end);
     std::cout << this->identify() << " shared lock from "<< this->read_start <<" to "<< this->read_end << endl;
@@ -49,6 +51,9 @@ void Receptionist::run(){
         }
     }
     file.freeLock();
+    std::cout << this->identify() << " cerrando channels.." << endl;
+    this->bread_channel->close_fifo(); //signal to stop loop for baker man
+    this->pizza_channel->close_fifo(); //signal to stop loop for pizza man
 }
 
 bool Receptionist::isDelimiter(char c){
@@ -79,9 +84,6 @@ std::string Receptionist::toUpper(std::string str){
 
 void Receptionist::stop(){
     Employee::stop();
-    std::cout << this->identify() << " cerrando channels.." << endl;
-    this->bread_channel->close_fifo(); //signal to stop loop for baker man
-    this->pizza_channel->close_fifo(); //signal to stop loop for pizza man
 }
 
 std::string Receptionist::identify() const {

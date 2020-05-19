@@ -33,7 +33,6 @@ void Bakery::initWorkDay(){
         num++;
     }
 
-
     for(Baker *  baker : this->allBakers){
         baker->start();
     }
