@@ -26,6 +26,9 @@ class Bakery{
         Sourdough  * sourdough;
 		Delivery * delivery;
 
+        FifoEscritura * bread_channel;
+        FifoEscritura * pizza_channel;
+
     public:
         //constructor
         Bakery(ArgsHelper::args * args);

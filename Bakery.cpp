@@ -14,10 +14,13 @@ Bakery::Bakery(ArgsHelper::args * args ){
         this->allBakers.push_front(a_baker);
     }
 
-    int bytes_by_delivery_recepcionist = ( args->file_size + args->delivery - 1 )/ args->delivery;
-    for(int start =0, num = 1 ; start < args->file_size && num <= args->delivery ; start = start + bytes_by_delivery_recepcionist, num=num+1){
-        Receptionist * a_recepcionist = new Receptionist(num, BREAD_CHANNEL , PIZZA_CHANNEL , start, start + bytes_by_delivery_recepcionist, args->pedido);
-        this->allReceptionists.push_front( a_recepcionist);
+    this->bread_channel = new FifoEscritura(BREAD_CHANNEL);
+    this->pizza_channel = new FifoEscritura(PIZZA_CHANNEL);
+
+    int bytes_by_delivery_receptionist = ( args->file_size + args->delivery - 1 )/ args->delivery;
+    for(int start =0, num = 1 ; start < args->file_size && num <= args->delivery ; start = start + bytes_by_delivery_receptionist, num=num+1){
+        Receptionist * a_receptionist = new Receptionist(num, this->bread_channel , this->pizza_channel , start, start + bytes_by_delivery_receptionist, args->pedido);
+        this->allReceptionists.push_front( a_receptionist);
     }
 
 }
@@ -27,15 +30,19 @@ void Bakery::initWorkDay(){
 	this->sourdough->start();
 	this->delivery->start();
 
-	int num = 1;
     for(Pizzamaker * pizza_maker : this->allPizzaMaker){
         pizza_maker->start();
-        num++;
     }
 
     for(Baker *  baker : this->allBakers){
         baker->start();
     }
+
+    std::cout <<  " abriendo channels.." <<  std::strerror(errno) << endl;
+    this->bread_channel->abrir();//block until at least one cooker man open read side
+    std::cout << " bread channel abierto .." <<  std::strerror(errno) << endl;
+    this->pizza_channel->abrir(); //block until at least one cooker man open read side
+    std::cout << " pizza channel abierto .." <<  std::strerror(errno) << endl;
 
     for(Receptionist * receptionist : this->allReceptionists){
         receptionist->start();
@@ -47,6 +54,8 @@ void Bakery::endWorkDay(){
     for(Receptionist * receptionist : this->allReceptionists){
         receptionist->stop();
     }
+    this->bread_channel->close_fifo(); //signal to stop loop for baker man
+    this->pizza_channel->close_fifo(); //signal to stop loop for pizza man
     //all receptionist already finished
 
     for(Pizzamaker * pizza_maker : this->allPizzaMaker){ //wait until all cookers finished
@@ -77,6 +86,8 @@ Bakery :: ~Bakery() {
     for(Receptionist * receptionist : this->allReceptionists){
         delete receptionist;
     }
+    delete this->bread_channel;
+    delete this->pizza_channel;
 }
 
     

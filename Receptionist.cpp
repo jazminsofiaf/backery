@@ -1,26 +1,19 @@
 
 #include "Receptionist.h"
 Receptionist::Receptionist(int id_num,
-                           std::string bread_name, std::string pizza_name,
+                           FifoEscritura * bread_channel,
+                           FifoEscritura * pizza_channel,
                            int start, int end, std::string file_name)
                             : Employee(id_num), 
-                            bread_channel_name(bread_name), pizza_channel_name(pizza_name),
+                            bread_channel(bread_channel), pizza_channel(pizza_channel),
                             read_start(start), read_end(end), orders_file(file_name){
-                        
-    this->bread_channel = new FifoEscritura(this->bread_channel_name);
-    this->pizza_channel = new FifoEscritura(this->pizza_channel_name);
+
     this->channel_map[BREAD] = this->bread_channel;
     this->channel_map[PIZZA] = this->pizza_channel;
     this->logger = new Logger();
 }
 
 void Receptionist::run(){
-
-    std::cout << this->identify() << " abriendo channels.." <<  std::strerror(errno) << endl;
-    this->bread_channel->abrir();//block until at least one cooker man open read side
-    std::cout << this->identify() << " bread channel abierto .." <<  std::strerror(errno) << endl;
-    this->pizza_channel->abrir(); //block until at least one cooker man open read side
-    std::cout << this->identify() << " pizza channel abierto .." <<  std::strerror(errno) << endl;
 
     SharedFile file(this->orders_file, this->read_start, this->read_end);
     std::cout << this->identify() << " shared lock from "<< this->read_start <<" to "<< this->read_end << endl;
@@ -51,9 +44,6 @@ void Receptionist::run(){
         }
     }
     file.freeLock();
-    std::cout << this->identify() << " cerrando channels.." << endl;
-    this->bread_channel->close_fifo(); //signal to stop loop for baker man
-    this->pizza_channel->close_fifo(); //signal to stop loop for pizza man
 }
 
 bool Receptionist::isDelimiter(char c){
@@ -92,8 +82,6 @@ std::string Receptionist::identify() const {
 }
 Receptionist::~Receptionist(){
     //std::cout << "calling recepcionist detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
-    delete this->bread_channel;
-    delete this->pizza_channel;
     delete this->logger;
 }
 

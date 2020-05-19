@@ -20,8 +20,6 @@ using namespace std;
 
 class Receptionist : public Employee {
     private:
-        std::string bread_channel_name;
-        std::string pizza_channel_name;
         int read_start;
         int read_end;
         std::string orders_file;
@@ -38,7 +36,8 @@ class Receptionist : public Employee {
     public:
         //constructor
         Receptionist(int id_num,
-                     std::string bread_name, std::string pizza_name,
+                     FifoEscritura * bread_channel,
+                     FifoEscritura * pizza_channel,
                      int start, int end, std::string file_name);
         ~Receptionist();
         void run() override;
