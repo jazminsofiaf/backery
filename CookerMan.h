@@ -29,7 +29,7 @@ class CookerMan : public Employee{
                                 std::string orders_channel_name, 
                                 std::string delivery_channel_name);
         void run() override;
-        void stop() override;
+        void waitMe() override;
         ~CookerMan();
 
         struct Product{

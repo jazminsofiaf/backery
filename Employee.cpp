@@ -19,7 +19,7 @@ void Employee::start(){
 }
 
 
-void Employee::stop(){
+void Employee::waitMe(){
     int status;
     pid_t rc_pid = waitpid(this->process_id, &status, 0);
     if (rc_pid < 0) {

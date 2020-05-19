@@ -15,14 +15,14 @@ class Employee{
     protected:
         int id;
         pid_t process_id;
+        virtual void run() = 0;
         
     public:
         //constructor
         Employee(int id);
 
         void start();
-        virtual void run() = 0;
-        virtual void stop();
+        virtual void waitMe();
         virtual std::string identify() const = 0;  
         virtual ~Employee();
 };

@@ -52,23 +52,22 @@ void Bakery::initWorkDay(){
 
 void Bakery::endWorkDay(){
     for(Receptionist * receptionist : this->allReceptionists){
-        receptionist->stop();
+        receptionist->waitMe();
     }
     this->bread_channel->close_fifo(); //signal to stop loop for baker man
     this->pizza_channel->close_fifo(); //signal to stop loop for pizza man
     //all receptionist already finished
 
     for(Pizzamaker * pizza_maker : this->allPizzaMaker){ //wait until all cookers finished
-        pizza_maker->stop();
+        pizza_maker->waitMe();
     }
     for(Baker * baker : this->allBakers){
-        baker->stop();
+        baker->waitMe();
     }
 
     //all cookers already finished
-
-    this->delivery->stop(); //wait until all cookers finish
-    this->sourdough->stop();
+    this->delivery->waitMe(); //wait until all cookers finish
+    this->sourdough->waitMe();
 
 
 }

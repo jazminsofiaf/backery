@@ -29,10 +29,10 @@ void Sourdough::run(){
 	
 }
 
-void Sourdough::stop(){
+void Sourdough::waitMe(){
     //std::cout << "[Sourdough] stoping..." <<this->process_id << std::endl;
 	kill(this->process_id, SIGUSR1);
-	Employee::stop();
+	Employee::waitMe();
 
 
 }

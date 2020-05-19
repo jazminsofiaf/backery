@@ -69,8 +69,8 @@ void CookerMan::run(){
 }
 
 
-void CookerMan::stop(){
-    Employee::stop();
+void CookerMan::waitMe(){
+    Employee::waitMe();
 }
 
 

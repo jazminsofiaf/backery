@@ -20,7 +20,7 @@ class Sourdough: public Employee{
         Sourdough(std::string channel_name);
         ~Sourdough();
         void run() override;
-        void stop() override;
+        void waitMe() override;
         std::string identify() const override; 
 
         struct Dough{

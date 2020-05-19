@@ -72,8 +72,8 @@ std::string Receptionist::toUpper(std::string str){
     return str;
 }
 
-void Receptionist::stop(){
-    Employee::stop();
+void Receptionist::waitMe(){
+    Employee::waitMe();
 }
 
 std::string Receptionist::identify() const {

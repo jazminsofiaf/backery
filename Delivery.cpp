@@ -31,8 +31,8 @@ void Delivery::run(){
 	//std::cout << "[Delivery] loop ends " << std::endl;
 }
 
-void Delivery::stop(){
-	Employee::stop();
+void Delivery::waitMe(){
+	Employee::waitMe();
 	
 }
 

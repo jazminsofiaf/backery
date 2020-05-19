@@ -20,7 +20,7 @@ class Delivery: public Employee{
         Delivery( std::string channel_name);
         ~Delivery();
         void run() override;
-        void stop() override;
+        void waitMe() override;
         std::string identify() const override; 
 };
 
