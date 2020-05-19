@@ -1,7 +1,4 @@
-#include <iostream>
-#include <unistd.h>
 #include <list>
-
 #include "Handlers/SIGINT_Handler.h"
 #include "Handlers/SignalHandler.h"
 #include "Logger.h"

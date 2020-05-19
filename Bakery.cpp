@@ -72,7 +72,7 @@ void Bakery::endWorkDay(){
 }
 
 Bakery :: ~Bakery() {
-    //std::cout << "calling Bakery detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
+    std::cout << "calling Bakery detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
     delete this->sourdough;
     delete this->delivery;
     for(Pizzamaker * pizza_maker : this->allPizzaMaker){ //wait until all cookers finished

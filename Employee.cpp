@@ -3,18 +3,18 @@
 Employee::Employee(int id_num): id(id_num){}
 
 void Employee::start(){
-    std::cout << "before fork " << std::strerror(errno) << endl;
+    //std::cout << "before fork " << std::strerror(errno) << endl;
     pid_t pid = fork ();
     if(pid < OK){
         std::cout << "fork error" << std::strerror(errno)   << endl;
         exit(EXIT_FAILURE);
     }
 	if ( pid == CHILD_PD ) {
-        std::cout << "before run " << std::strerror(errno) << endl;
+        //std::cout << "before run " << std::strerror(errno) << endl;
         this->run();
         exit(OK); //no detructor called
 	}
-	//std::cout << this-> identify() <<" pid: "<<pid << std::endl;
+	std::cout << this-> identify() <<" pid: "<<pid << std::endl;
 	this->process_id = pid;
 }
 
