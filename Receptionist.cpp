@@ -62,17 +62,18 @@ void Receptionist::tryToSend(std::string str_order, int pos){
         FifoEscritura * channel = this->channel_map[str_order];
         Receptionist::Order order;
         order.id = pos; //set last read position as order id
-        order.product = str_order;
+        memset(order.product, '\0', sizeof(order.product));
+        std::copy(str_order.begin(), str_order.end(), order.product);
         std::cout <<this->identify() << " mandando orden" << order.toString() << endl;
-        size_t sent = channel->escribir(&order, sizeof(Receptionist::Order));
-        sleep(1);
+        size_t sent = channel->escribir(static_cast<const void *>(&order), sizeof(Receptionist::Order));
+
         if ( sent > 0){
             std::cout <<this->identify() << " mandando orden " <<sent << order.toString() << endl;
         }else{
             std::cout <<this->identify() << "No se mando " <<sent << endl;
         }
         std::cout <<this->identify() << " orden mandada" << order.toString() << endl;
-        this->logger->log(this, order.toString());
+        this->logger->log(this, " gets new " + order.toString());
 
     }
 }

@@ -1,7 +1,6 @@
 #ifndef RECEPCIONIST_H_
 #define RECEPCIONIST_H_
 
-#define CHUNK_LEN 5 
 
 
 #include <fstream> 
@@ -48,9 +47,9 @@ class Receptionist : public Employee {
 
         struct Order {
             int id;
-            std::string product;
+            char product[PRODUCT_LEN];
             std::string toString(){
-                return " Order { id = " +std::to_string(id) +", product = "+ product +" }";
+                return " Order { id = " +std::to_string(id) +", product = "+ std::string(product) +" }";
             }
         };
 };

@@ -19,7 +19,7 @@ protected:
     std::string cooker;
 
 public:
-	Lock ( const std::string nombre, const std::string cooker);
+	Lock (const int fd, const std::string nombre, const std::string cooker);
 
     ~Lock();
 

@@ -5,4 +5,10 @@
 
 #define FIFO_EOF 0
 
+#define  PRODUCT_LEN 6
+
+#define PIZZA "PIZZA"
+#define BREAD "PAN"
+
+
 

@@ -22,7 +22,7 @@ void Delivery::run(){
 	size_t read_bytes = this->read_channel->leer(&product, sizeof(CookerMan::Product));
 	while(read_bytes > FIFO_EOF && sigint_handler.getGracefulQuit() == 0 ){ // all cookers closed write channel
 
-        this->logger->log(this, product.toString());
+        this->logger->log(this, " sending ----> " + product.toString());
 
         //std::cout << "[Delivery] " << product.toString() << std::endl;
         read_bytes = this->read_channel->leer(&product, sizeof(CookerMan::Product));

@@ -16,10 +16,8 @@ using namespace std;
 
 class CookerMan : public Employee{
     protected:
-        std::string sourdough_channel_name;
-        std::string orders_channel_name;
-        std::string delivery_channel_name;
-        FifoShared * sourdough_channel;
+        FifoEscritura * dough_order_channel;
+        FifoLectura * sourdough_channel;
         FifoShared * orders_channel;
         FifoEscritura * delivery_channel;
         Logger * logger;
@@ -27,19 +25,21 @@ class CookerMan : public Employee{
         
     public:
         //constructor
-        CookerMan(int id_num,  std::string sourdough_channel_name, 
+        CookerMan(int id_num,  FifoEscritura * dough_order_channel,
+                                FifoLectura * sourdough_channel,
                                 std::string orders_channel_name, 
                                 std::string delivery_channel_name);
         void run() override;
         void waitMe() override;
+        virtual std::string getMeal() const = 0;
         ~CookerMan();
 
         struct Product{
             Receptionist::Order order;
             Sourdough::Dough dough;
-            std::string made_by;
+            int cook_id;
             std::string toString(){
-                return  "Product { " +dough.toString()+", "+ order.toString()+" by = " + made_by +" }";
+                return  "Product { " +dough.toString()+", "+ order.toString()+" by = " + std::to_string(cook_id) +" }";
             }
         };
 };
