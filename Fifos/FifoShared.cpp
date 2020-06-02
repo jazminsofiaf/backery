@@ -10,7 +10,7 @@ FifoShared::~FifoShared() {
     remove(this->lock_file_name.c_str());
 }
 
-ssize_t FifoShared::leer(void* buffer,const ssize_t buffsize,  const std::string cooker ) const {
+ssize_t FifoShared::leer(void* buffer,const ssize_t buffsize) const {
     if(this->fd == -1){
         return -1;
     }

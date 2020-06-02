@@ -41,6 +41,21 @@ class CookerMan : public Employee{
             std::string toString(){
                 return  "Product { " +dough.toString()+", "+ order.toString()+" by = " + std::to_string(cook_id) +" }";
             }
+            const char * serialize() {
+                std::ostringstream out;
+                out  << order.serialize() << '|' << dough.serialize();
+                return out.str().c_str();
+            }
+
+            void deserialize(const char * msg){
+                char  pipe1 = 0;
+                std::istringstream in(msg);
+                char order_msg[ORDER_SIZE];
+                char dough_msg[DOUGH_SIZE];
+                in >> order_msg >> pipe1 >> dough_msg;
+                order.deserialize(order_msg);
+                dough.deserialize(dough_msg);
+            }
         };
 };
 

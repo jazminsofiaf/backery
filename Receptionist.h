@@ -1,5 +1,7 @@
 #ifndef RECEPCIONIST_H_
 #define RECEPCIONIST_H_
+#include <iostream>
+#include <sstream>
 
 
 
@@ -49,6 +51,17 @@ class Receptionist : public Employee {
             char product[PRODUCT_LEN];
             std::string toString(){
                 return " Order { id = " +std::to_string(id) +", product = "+ std::string(product) +" }";
+            }
+            const char * serialize() {
+                std::ostringstream out;
+                out  << id << '|' << product;
+                return out.str().c_str();
+            }
+
+            void deserialize(const char * msg){
+                char  pipe1 = 0;
+                std::istringstream in(msg);
+                in >> id >> pipe1 >> product;
             }
         };
 };

@@ -29,7 +29,9 @@ void CookerMan::run(){
     Sourdough::Dough dough_piece;
     CookerMan::Product product;
 
-	int read_bytes_order = orders_channel->leer(&order, sizeof(Receptionist::Order), this->identify());
+    char order_msg[ORDER_SIZE];
+    int read_bytes_order = this->orders_channel->leer(&order_msg, ORDER_SIZE);
+    order.deserialize(order_msg);
 	while(read_bytes_order > FIFO_EOF && sigint_handler.getGracefulQuit() == 0){ // until receptionist  close other side
 
         this->logger->log(this, " gets "+ order.toString());
@@ -41,9 +43,12 @@ void CookerMan::run(){
         std::copy(meal.begin(), meal.end(), dough_order.product);
 
         this->logger->log( this, " ask for piece of dough. "+ dough_order.toString());
-        this->dough_order_channel->escribir(static_cast<const void *>(&dough_order), sizeof(dough_order));
+        this->dough_order_channel->escribir(static_cast<const void *>(dough_order.serialize()), DOUGH_ORDER_SIZE);
 
-	    size_t read_bytes_dough = this->sourdough_channel->leer(&dough_piece, sizeof(Sourdough::Dough));
+        char dough_msg[DOUGH_SIZE];
+	    size_t read_bytes_dough = this->sourdough_channel->leer(&dough_msg, DOUGH_SIZE);
+        dough_piece.deserialize(dough_msg);
+
         if(read_bytes_dough == FIFO_EOF || read_bytes_dough == ERROR || sigint_handler.getGracefulQuit() != 0 ){
             break; 
         } 
@@ -53,9 +58,10 @@ void CookerMan::run(){
         product.order = order;
         product.dough = dough_piece;
         product.cook_id = this->id;
-        this->delivery_channel->escribir(static_cast<const void *>(&product), sizeof(CookerMan::Product));
+        this->delivery_channel->escribir(static_cast<const void *>(product.serialize()), PRODUCT_SIZE);
 
-        read_bytes_order = orders_channel->leer(&order,sizeof(Receptionist::Order), this->identify());
+        read_bytes_order = this->orders_channel->leer(&order_msg, ORDER_SIZE);
+        order.deserialize(order_msg);
     } 
     if(read_bytes_order == ERROR){
         std::cerr << this->identify() << " Error reading orders fifo: " << std::strerror(errno) << std::endl;

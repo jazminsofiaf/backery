@@ -60,7 +60,7 @@ void Receptionist::tryToSend(std::string str_order, int pos){
         order.id = pos; //set last read position as order id
         memset(order.product, '\0', sizeof(order.product));
         std::copy(str_order.begin(), str_order.end(), order.product);
-        channel->escribir(static_cast<const void *>(&order), sizeof(Receptionist::Order));
+        channel->escribir(static_cast<const void *>(order.serialize()), ORDER_SIZE);
         this->logger->log(this, " gets new " + order.toString());
 
     }

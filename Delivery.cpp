@@ -17,11 +17,15 @@ void Delivery::run(){
 	this->read_channel->abrir(); //blocking until cooker opens for write
 
     CookerMan::Product product;
-	size_t read_bytes = this->read_channel->leer(&product, sizeof(CookerMan::Product));
+
+    char product_msg[PRODUCT_SIZE];
+	size_t read_bytes = this->read_channel->leer(&product_msg, PRODUCT_SIZE);
+	product.deserialize(product_msg);
 	while(read_bytes > FIFO_EOF && sigint_handler.getGracefulQuit() == 0 ){ // all cookers closed write channel
 
         this->logger->log(this, " ------> " + product.toString());
-        read_bytes = this->read_channel->leer(&product, sizeof(CookerMan::Product));
+        read_bytes = this->read_channel->leer(&product_msg, PRODUCT_SIZE);
+        product.deserialize(product_msg);
     } 
     if(read_bytes == ERROR){
         std::cerr << this->identify() <<" delivery channel closed" << std::endl;
@@ -35,7 +39,6 @@ void Delivery::waitMe(){
 	Employee::waitMe();
 	
 }
-
 
 Delivery:: ~Delivery() {
 	delete this->read_channel;

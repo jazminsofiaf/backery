@@ -32,7 +32,9 @@ void Sourdough::run(){
     }
 
     Sourdough::DoughOrder dough_order;
-    int read_bytes_order = this->dough_order_channel->leer(&dough_order, sizeof(Sourdough::DoughOrder));
+    char dough_order_msg[DOUGH_ORDER_SIZE];
+    int read_bytes_order = this->dough_order_channel->leer(&dough_order_msg, DOUGH_ORDER_SIZE);
+    dough_order.deserialize(dough_order_msg);
 
 	while( read_bytes_order > 0 && sigusr_handler.getGracefulQuit() == 0 ) {
         this->feedDough();
@@ -44,7 +46,9 @@ void Sourdough::run(){
 	    FifoEscritura * write_channel = this->all_write_channels[key];
         this->cookSourDough(write_channel, dough_order.order_id);
 
-        read_bytes_order = this->dough_order_channel->leer(&dough_order, sizeof(Sourdough::DoughOrder));
+        char dough_order_msg[DOUGH_ORDER_SIZE];
+        read_bytes_order = this->dough_order_channel->leer(&dough_order_msg, DOUGH_ORDER_SIZE);
+        dough_order.deserialize(dough_order_msg);
 	}
 
     for (FifoEscritura * write_channel : this->write_channels_sorted){
@@ -69,7 +73,7 @@ void Sourdough::cookSourDough(FifoEscritura * write_channel, int num){
     dough.num = num;
     dough.index = this->dough_index ++;
     this->logger->log(this, " sending " + dough.toString());
-    write_channel->escribir(static_cast<const void *>(&dough), sizeof(Sourdough::Dough));
+    write_channel->escribir(static_cast<const void *>(dough.serialize()), DOUGH_SIZE);
 }
 
 void Sourdough::waitMe(){

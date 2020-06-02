@@ -15,7 +15,7 @@ private:
 public:
 	FifoShared(const std::string nombre);
 	~FifoShared();
-	ssize_t leer(void* buffer, const ssize_t buffsize, const std::string cooker) const ;
+	ssize_t leer(void* buffer, const ssize_t buffsize) const ;
 };
 
 #endif
