@@ -4,7 +4,6 @@
 
 SharedFile :: SharedFile ( const std::string name, int start, int end )
 : LockFile(name, start, end, F_RDLCK, std::string("rb")){
-    std::cout << " fseek en sharedfile " << std::endl;
     fseek(this->file, start, SEEK_SET);
 }
 

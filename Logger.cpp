@@ -24,8 +24,6 @@ void Logger::log(const Employee * employee, const std::string message){
             memset(buffer, '\0', sizeof(buffer)); 
             std::copy(msg_start, msg_end, buffer);
 
-            //std::cout <<"{Logger} writing ---------------------------------> " << buffer << std::endl;
-            
             this->exclusiveFile->escribir(static_cast<const void *>(&buffer), sizeof(buffer));
             
             if(end_position == formated_message.length()){
@@ -42,7 +40,6 @@ void Logger::log(const Employee * employee, const std::string message){
     return str_message.length() <= position ? str_message.length() : position;
 }
 Logger::~Logger() {
-    //std::cout << "calling logger detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
     delete this->exclusiveFile;
 }
 

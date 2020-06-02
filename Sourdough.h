@@ -20,6 +20,9 @@ private:
     std::list<FifoEscritura *> write_channels_sorted;
     std::map<std::string, FifoEscritura *> all_write_channels;
     int dough_index;
+    int dough_size;
+
+    void feedDough();
 
     public:
         //constructor
@@ -43,8 +46,9 @@ private:
         struct Dough{
             int num;
             int index;
+            int dough_size;
             std::string toString(){
-                return " Dough { num = " +std::to_string(num) +", index = " +std::to_string(index) +" }";
+                return " Dough { num = " +std::to_string(num) +", index = " +std::to_string(index) +" size = "+std::to_string(dough_size)+"}";
             }
         };
 

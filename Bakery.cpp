@@ -71,7 +71,6 @@ void Bakery::endWorkDay(){
     this->bread_channel->eliminar();
     this->pizza_channel->eliminar();
 
-    std::cout << "orders channels closed ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
 
     //all receptionist already finished
 
@@ -81,6 +80,7 @@ void Bakery::endWorkDay(){
     for(Baker * baker : this->allBakers){
         baker->waitMe();
     }
+
     //all cookers already finished
     this->dough_orders_channel->close_fifo(); //avoid sourdough block at read
     this->dough_orders_channel->eliminar();
@@ -95,12 +95,11 @@ void Bakery::endWorkDay(){
         sourdough_channel->eliminar();
     }
 
-    std::cout << "todo cerro bien"  << std::endl;
+    std::cout << "all closed"  << std::endl;
 
 }
 
 Bakery :: ~Bakery() {
-    std::cout << "calling Bakery detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
     delete this->sourdough;
     delete this->delivery;
     for(Pizzamaker * pizza_maker : this->allPizzaMaker){ //wait until all cookers finished

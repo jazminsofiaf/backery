@@ -3,9 +3,7 @@
 FifoEscritura::FifoEscritura(const std::string nombre) : Fifo(nombre) {
 }
 
-FifoEscritura::~FifoEscritura() {
-	//std::cout << "calling write fifo detructor ~~~~~~~~~~~~~~~~~~~~~~~~~~"<< std::endl;
-}
+FifoEscritura::~FifoEscritura() {}
 
 void FifoEscritura::abrir() {
 	this->fd = open ( nombre.c_str(),O_WRONLY );

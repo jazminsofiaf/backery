@@ -15,11 +15,9 @@ class Lock {
 protected:
 	struct flock fl{};
 	int fd;
-	std::string nombre;
-    std::string cooker;
 
 public:
-	Lock (const int fd, const std::string nombre, const std::string cooker);
+	Lock (const int fd);
 
     ~Lock();
 

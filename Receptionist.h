@@ -8,7 +8,6 @@
 #include <fcntl.h>
 #include <map>
 #include "Constant.h"
-#include "ProductEnum.h"
 #include "Locks/SharedFile.h"
 #include "Handlers/SIGUSR_Handler.h"
 #include "Handlers/SignalHandler.h"
